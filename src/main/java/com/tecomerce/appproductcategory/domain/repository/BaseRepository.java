@@ -1,8 +1,8 @@
-package com.tecomerce.appproductcategory.application.usecase;
+package com.tecomerce.appproductcategory.domain.repository;
 
 import java.util.List;
 
-public interface BaseUseCase<T, ID> {
+public interface BaseRepository<T, ID> {
 
     default T create(T entity) {
         return null;

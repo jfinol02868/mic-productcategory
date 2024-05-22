@@ -1,5 +1,7 @@
 package com.tecomerce.appproductcategory.infrastructure.bd.document;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class MoneyDocument {
 
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String currency;
     private BigDecimal amount;

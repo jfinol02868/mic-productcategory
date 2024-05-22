@@ -1,7 +1,17 @@
+server:
+  port: 8090
+
 spring:
   application:
     name: mic-productCategory
 
-server:
-    port: 8090
+  data:
+    mongodb:
+      uri: mongodb://jfinol02:jfinol02@localhost:27017/micro
+
+logging:
+  level:
+    org.springframework.data.mongodb: DEBUG
+
+
 

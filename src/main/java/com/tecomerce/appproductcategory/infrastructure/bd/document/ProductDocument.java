@@ -2,6 +2,10 @@ package com.tecomerce.appproductcategory.infrastructure.bd.document;
 
 import com.tecomerce.appproductcategory.domain.entity.Money;
 import com.tecomerce.appproductcategory.domain.valueobject.enums.EnumStatus;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductDocument {
 
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     private String name;
     private String description;
     private Boolean status;
@@ -36,6 +41,7 @@ public class ProductDocument {
     private Integer quantity;
     private Integer minimum;
     private Integer maximum;
+    @Enumerated(EnumType.STRING)
     private EnumStatus stockStatus;
 
 

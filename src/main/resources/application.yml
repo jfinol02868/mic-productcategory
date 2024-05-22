@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: mic-productCategory
+
+server:
+    port: 8090
+

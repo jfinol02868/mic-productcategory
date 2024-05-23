@@ -114,7 +114,6 @@ public class ColorRepositoryImpl implements ColorRepository {
         PageRequest pageable = PageRequest.of(page, size, Sort.by(dir, properties));
         query.with(pageable);
 
-        List<ColorDocument> colorDocuments = mongoTemplate.find(query, ColorDocument.class);
-        return mapper.toEntityList(colorDocuments);
+        return mapper.toEntityList(mongoTemplate.find(query, ColorDocument.class));
     }
 }

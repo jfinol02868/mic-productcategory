@@ -1,4 +1,4 @@
-package com.tecomerce.appproductcategory.api.service.dto;
+package com.tecomerce.appproductcategory.api.service.dto.enums;
 
 import lombok.Getter;
 

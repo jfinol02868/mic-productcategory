@@ -33,7 +33,7 @@ public interface BaseRepository<T, ID> {
     default void delete(ID id) {
     }
 
-    default List<Color> deleteAll(List<ID> ids) {
+    default List<T> deleteAll(List<ID> ids) {
         return null;
     }
 
@@ -41,7 +41,7 @@ public interface BaseRepository<T, ID> {
         return null;
     }
 
-    default List<Color> filterColors(String id, String name, String code, String hex, String rgb, int page, int size, String direction, String... properties) {
+    default List<T> filterColors(String id, String name, String code, String hex, String rgb, int page, int size, String direction, String... properties) {
         return null;
     }
 }

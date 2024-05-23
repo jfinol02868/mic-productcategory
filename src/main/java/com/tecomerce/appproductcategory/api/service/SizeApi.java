@@ -109,7 +109,7 @@ public interface SizeApi {
     @ApiResponse(responseCode = "403", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "404", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "500", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
-    default ResponseEntity<List<SizeDTO>> deleteAll(@RequestParam List<String> ids) {
+    default ResponseEntity<Void> deleteAll(@RequestParam List<String> ids) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -123,7 +123,7 @@ public interface SizeApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    @GetMapping("/color-filter")
+    @GetMapping("/size-filter")
     @Operation( operationId = "get-sizes-filter", description = "Get sizes filter.")
     @ApiResponse(responseCode = "200", content = @Content(mediaType = MEDIA_TYPE,  array = @ArraySchema(schema = @Schema(implementation = SizeDTO.class))))
     @ApiResponse(responseCode = "401", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
@@ -133,10 +133,11 @@ public interface SizeApi {
             @RequestParam(required = false) String id,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String code,
-            @RequestParam(required = false) String hex,
-            @RequestParam(required = false) String rgb,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String size,
             @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "10") int size,
+            @RequestParam(required = false, defaultValue = "10") int records,
             @RequestParam(required = false) SortEnum direction,
             @RequestParam(required = false) String... properties) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);

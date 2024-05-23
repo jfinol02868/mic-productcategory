@@ -88,8 +88,8 @@ public class ColorRepositoryImpl implements ColorRepository {
     }
 
     @Override
-    public List<Color> deleteAll(List<String> ids) {
-        return mapper.toEntityList(cRepository.findAllById(ids));
+    public void deleteAll(List<String> ids) {
+        cRepository.deleteAllById(ids);
     }
 
     @Override

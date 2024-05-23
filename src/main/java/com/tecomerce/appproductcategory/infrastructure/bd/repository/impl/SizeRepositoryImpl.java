@@ -1,5 +1,6 @@
 package com.tecomerce.appproductcategory.infrastructure.bd.repository.impl;
 
+import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
 import com.tecomerce.appproductcategory.domain.entity.Size;
 import com.tecomerce.appproductcategory.domain.exception.EntityNotFoundException;
 import com.tecomerce.appproductcategory.domain.repository.SizeRepository;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -87,8 +90,8 @@ public class SizeRepositoryImpl implements SizeRepository {
     }
 
     @Override
-    public List<Size> deleteAll(List<String> ids) {
-        return mapper.toEntityList(repository.findAllById(ids));
+    public void deleteAll(List<String> ids) {
+        repository.deleteAllById(ids);
     }
 
     @Override
@@ -97,5 +100,23 @@ public class SizeRepositoryImpl implements SizeRepository {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(dir, sort));
         Page<SizeDocument> colorPage = repository.findAll(pageRequest);
         return mapper.toEntityList(colorPage.getContent());
+    }
+
+    @Override
+    public List<Size> filterSize(String id, String name, String code, String description, String type, String size, int page, int records, String direction, String... properties) {
+        Query query = new Query();
+
+        if (Objects.nonNull(id)) query.addCriteria(Criteria.where("id").is(id));
+        if (Objects.nonNull(name)) query.addCriteria(Criteria.where("name").is(name));
+        if (Objects.nonNull(code)) query.addCriteria(Criteria.where("code").is(code));
+        if (Objects.nonNull(description)) query.addCriteria(Criteria.where("description").is(description));
+        if (Objects.nonNull(type))  query.addCriteria(Criteria.where("type").is(type));
+        if (Objects.nonNull(size))  query.addCriteria(Criteria.where("size").is(size));
+
+        Sort.Direction dir = Sort.Direction.fromString(direction);
+        PageRequest pageable = PageRequest.of(page, records, Sort.by(dir, properties));
+        query.with(pageable);
+
+        return mapper.toEntityList(mongoTemplate.find(query, SizeDocument.class));
     }
 }

@@ -69,8 +69,9 @@ public class ColorController implements ColorApi {
     }
 
     @Override
-    public ResponseEntity<List<ColorDTO>> deleteAll(List<String> ids) {
-        return new ResponseEntity<>(mapper.toDtoList(userCase.deleteAll(ids)),HttpStatus.OK);
+    public ResponseEntity<Void> deleteAll(List<String> ids) {
+        userCase.deleteAll(ids);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override

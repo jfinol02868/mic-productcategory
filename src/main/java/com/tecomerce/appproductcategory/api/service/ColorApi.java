@@ -109,7 +109,7 @@ public interface ColorApi {
     @ApiResponse(responseCode = "403", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "404", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "500", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
-    default ResponseEntity<List<ColorDTO>> deleteAll(@RequestParam List<String> ids) {
+    default ResponseEntity<Void> deleteAll(@RequestParam List<String> ids) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 

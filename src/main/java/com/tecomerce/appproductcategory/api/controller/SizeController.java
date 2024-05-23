@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/sizes")
+@RequestMapping("/v1/sizes")
 public class SizeController implements SizeApi {
 
     private final SizeUseCase useCase;
@@ -65,14 +65,21 @@ public class SizeController implements SizeApi {
     }
 
     @Override
-    public ResponseEntity<List<SizeDTO>> deleteAll(List<String> ids) {
-        return new ResponseEntity<>(mapper.toDtoList(useCase
-                .deleteAll(ids)), HttpStatus.OK);
+    public ResponseEntity<Void> deleteAll(List<String> ids) {
+        useCase.deleteAll(ids);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override
     public ResponseEntity<List<SizeDTO>> findAllPaginated(int page, int size, String sort, SortEnum direction) {
         return new ResponseEntity<>(mapper.toDtoList(useCase
                 .findAllPaginated(page, size, sort, direction.getValue())), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<SizeDTO>> filterColors(String id, String name, String code, String description, String type, String size, int page, int records, SortEnum direction, String... properties) {
+
+        return new ResponseEntity<>(mapper.toDtoList(useCase
+                .filterSize(id, name, code, description, type, size, page, records, direction.getValue(), properties)), HttpStatus.OK);
     }
 }

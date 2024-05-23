@@ -33,8 +33,7 @@ public interface BaseUseCase<T, ID> {
     default void delete(ID id) {
     }
 
-    default List<T> deleteAll(List<ID> ids) {
-        return null;
+    default void deleteAll(List<ID> ids) {
     }
 
     default List<T> findAllPaginated(int page, int size, String sort, String direction) {

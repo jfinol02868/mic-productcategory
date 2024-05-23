@@ -1,5 +1,6 @@
 package com.tecomerce.appproductcategory.application.usecase.impl;
 
+import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
 import com.tecomerce.appproductcategory.application.usecase.SizeUseCase;
 import com.tecomerce.appproductcategory.domain.entity.Size;
 import com.tecomerce.appproductcategory.domain.repository.SizeRepository;
@@ -45,12 +46,22 @@ public class SizeUseCaseImpl implements SizeUseCase {
     }
 
     @Override
-    public void delete(String s) {
-        repository.delete(s);
+    public void delete(String id) {
+        repository.delete(id);
     }
 
     @Override
-    public List<Size> deleteAll(List<String> strings) {
-        return repository.deleteAll(strings);
+    public void deleteAll(List<String> ids) {
+        repository.deleteAll(ids);
+    }
+
+    @Override
+    public List<Size> findAllPaginated(int page, int size, String sort, String direction) {
+        return repository.findAllPaginated(page, size, sort, direction);
+    }
+
+    @Override
+    public List<Size> filterSize(String id, String name, String code, String description, String type, String size, int page, int records, String direction, String... properties) {
+        return repository.filterSize(id, name, code, description, type, size, page, records, direction, properties);
     }
 }

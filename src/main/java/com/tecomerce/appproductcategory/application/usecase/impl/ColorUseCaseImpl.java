@@ -50,8 +50,8 @@ public class ColorUseCaseImpl implements ColorUseCase {
     }
 
     @Override
-    public List<Color> deleteAll(List<String> ids) {
-        return repository.deleteAll(ids);
+    public void deleteAll(List<String> ids) {
+        repository.deleteAll(ids);
     }
 
     @Override

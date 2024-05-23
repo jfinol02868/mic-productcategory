@@ -1,5 +1,7 @@
 package com.tecomerce.appproductcategory.application.usecase;
 
+import com.tecomerce.appproductcategory.domain.entity.Color;
+
 import java.util.List;
 
 public interface BaseUseCase<T, ID> {
@@ -31,10 +33,11 @@ public interface BaseUseCase<T, ID> {
     default void delete(ID id) {
     }
 
-    default void deleteAll(List<ID> ids) {
+    default List<Color> deleteAll(List<ID> ids) {
+        return null;
     }
 
-    default List<T> findAll(int page, int size, String sort, String direction, String search, String filter) {
+    default List<T> findAll(int page, int size, String sort, String direction) {
         return null;
     }
 }

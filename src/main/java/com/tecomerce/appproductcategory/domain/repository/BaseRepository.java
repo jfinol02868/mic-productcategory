@@ -1,5 +1,8 @@
 package com.tecomerce.appproductcategory.domain.repository;
 
+import com.tecomerce.appproductcategory.domain.entity.Color;
+import org.springframework.data.mongodb.core.query.Query;
+
 import java.util.List;
 
 public interface BaseRepository<T, ID> {
@@ -31,10 +34,15 @@ public interface BaseRepository<T, ID> {
     default void delete(ID id) {
     }
 
-    default void deleteAll(List<ID> ids) {
+    default List<Color> deleteAll(List<ID> ids) {
+        return null;
     }
 
-    default List<T> findAll(int page, int size, String sort, String direction, String search, String filter) {
+    default List<T> findAll(int page, int size, String sort, String direction) {
+        return null;
+    }
+
+    default List<T> filterColors(String id, String name, String code, String hex, String rgb){
         return null;
     }
 }

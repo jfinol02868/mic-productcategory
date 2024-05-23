@@ -51,12 +51,12 @@ public class ColorUseCaseImpl implements ColorUseCase {
     }
 
     @Override
-    public void deleteAll(List<String> ids) {
-        repository.deleteAll(ids);
+    public List<Color> deleteAll(List<String> ids) {
+        return repository.deleteAll(ids);
     }
 
     @Override
-    public List<Color> findAll(int page, int size, String sort, String direction, String search, String filter) {
-        return repository.findAll(page, size, sort, direction, search, filter);
+    public List<Color> findAll(int page, int size, String sort, String direction) {
+        return repository.findAll(page, size, sort, direction);
     }
 }

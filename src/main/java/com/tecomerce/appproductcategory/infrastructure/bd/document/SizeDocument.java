@@ -1,7 +1,5 @@
 package com.tecomerce.appproductcategory.infrastructure.bd.document;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,8 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TypeAlias("color")
-@Document(collection = "colors")
+@TypeAlias("size")
+@Document(collection = "sizes")
 public class SizeDocument {
 
     @Id

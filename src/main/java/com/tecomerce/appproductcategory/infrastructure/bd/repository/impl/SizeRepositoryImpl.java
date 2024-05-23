@@ -9,7 +9,11 @@ import com.tecomerce.appproductcategory.infrastructure.bd.mapper.SizeMapper;
 import com.tecomerce.appproductcategory.infrastructure.bd.repository.SizeRepositoryAdapter;
 import com.tecomerce.appproductcategory.infrastructure.util.IdGenerator;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +22,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Log4j2
 @Repository
 @AllArgsConstructor
 public class SizeRepositoryImpl implements SizeRepository {
@@ -25,12 +30,12 @@ public class SizeRepositoryImpl implements SizeRepository {
     private final SizeMapper mapper;
     private final IdGenerator idGenerator;
     private final MongoTemplate mongoTemplate;
-    private final SizeRepositoryAdapter sRepository;
+    private final SizeRepositoryAdapter repository;
 
     @Override
     public Size create(Size entity) {
-        if (Objects.isNull(entity.getId())) entity.setId(idGenerator.generateId(SizeDocument.class));
-        return mapper.toEntity(sRepository.save(mapper.toDocument(entity)));
+        if (Objects.isNull(entity.getId())) entity.setId(idGenerator.generateId(ColorDocument.class));
+        return mapper.toEntity(repository.save(mapper.toDocument(entity)));
     }
 
     @Override
@@ -38,62 +43,59 @@ public class SizeRepositoryImpl implements SizeRepository {
         entities = entities.stream().peek(entity -> {
             if (Objects.isNull(entity.getId())) entity.setId(idGenerator.generateId(SizeDocument.class));
         }).collect(Collectors.toList());
-        return mapper.toEntityList(sRepository.saveAll(mapper.toDocumentList(entities)));
+        return mapper.toEntityList(repository.saveAll(mapper.toDocumentList(entities)));
     }
 
     @Override
     public Size update(Size entity, String id) {
-//        ColorDocument color = sRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-//        entity.setId(id);
-//        BeanUtils.copyProperties(entity, color);
-//        return mapper.toEntity(sRepository.save(color));
-        return null;
+        SizeDocument document = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        entity.setId(id);
+        BeanUtils.copyProperties(entity, document);
+        return mapper.toEntity(repository.save(document));
     }
 
     @Override
     public List<Size> updateAll(List<Size> entities) {
-//        return entities.stream()
-//                .flatMap(entity -> sRepository.findById(entity.getId())
-//                        .map(existingEntity -> {
-//                            BeanUtils.copyProperties(entity, existingEntity);
-//                            return Stream.of(mapper.toEntity(cRepository.save(existingEntity)));
-//                        })
-//                        .orElseGet(() -> {
-//                            log.info("Entity not found with ID: " + entity.getId());
-//                            return Stream.empty();
-//                        })
-//                )
-//                .collect(Collectors.toList());
-        return null;
+        return entities.stream()
+                .flatMap(entity -> repository.findById(entity.getId())
+                        .map(existingEntity -> {
+                            BeanUtils.copyProperties(entity, existingEntity);
+                            return Stream.of(mapper.toEntity(repository.save(existingEntity)));
+                        })
+                        .orElseGet(() -> {
+                            log.info("Entity not found with ID: " + entity.getId());
+                            return Stream.empty();
+                        })
+                )
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Size findById(String s) {
-        return SizeRepository.super.findById(s);
+    public Size findById(String id) {
+        return mapper.toEntity(repository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 
     @Override
-    public List<Size> findByIds(List<String> id) {
-        return SizeRepository.super.findByIds(id);
+    public List<Size> findByIds(List<String> ids) {
+        return mapper.toEntityList(repository.findAllById(ids));
     }
 
     @Override
     public void delete(String id) {
-        SizeRepository.super.delete(id);
+        this.findById(id);
+        repository.deleteById(id);
     }
 
     @Override
-    public List<Size> deleteAll(List<String> strings) {
-        return SizeRepository.super.deleteAll(strings);
+    public List<Size> deleteAll(List<String> ids) {
+        return mapper.toEntityList(repository.findAllById(ids));
     }
 
     @Override
     public List<Size> findAllPaginated(int page, int size, String sort, String direction) {
-        return SizeRepository.super.findAllPaginated(page, size, sort, direction);
-    }
-
-    @Override
-    public List<Size> filterColors(String id, String name, String code, String hex, String rgb, int page, int size, String direction, String... properties) {
-        return SizeRepository.super.filterColors(id, name, code, hex, rgb, page, size, direction, properties);
+        Sort.Direction dir = Sort.Direction.fromString(direction);
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(dir, sort));
+        Page<SizeDocument> colorPage = repository.findAll(pageRequest);
+        return mapper.toEntityList(colorPage.getContent());
     }
 }

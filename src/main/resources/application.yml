@@ -12,7 +12,7 @@ spring:
 
   data:
     mongodb:
-      database: config
+      database: micro
       username: jfinol02
       password: jfinol02
       host: localhost

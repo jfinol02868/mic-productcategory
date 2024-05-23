@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class SizeUseCaseImpl implements SizeUseCase {
-    
+
     private final SizeRepository repository;
 
     @Override
@@ -25,8 +25,8 @@ public class SizeUseCaseImpl implements SizeUseCase {
     }
 
     @Override
-    public Size update(Size entity, String id) {
-        return repository.update(entity, id);
+    public Size update(Size entity, String s) {
+        return repository.update(entity, s);
     }
 
     @Override
@@ -35,8 +35,8 @@ public class SizeUseCaseImpl implements SizeUseCase {
     }
 
     @Override
-    public Size findById(String id) {
-        return repository.findById(id);
+    public Size findById(String s) {
+        return repository.findById(s);
     }
 
     @Override
@@ -45,22 +45,12 @@ public class SizeUseCaseImpl implements SizeUseCase {
     }
 
     @Override
-    public void delete(String id) {
-        repository.delete(id);
+    public void delete(String s) {
+        repository.delete(s);
     }
 
     @Override
-    public List<Size> deleteAll(List<String> ids) {
-        return repository.deleteAll(ids);
-    }
-
-    @Override
-    public List<Size> findAllPaginated(int page, int size, String sort, String direction) {
-        return repository.findAllPaginated(page, size, sort, direction);
-    }
-
-    @Override
-    public List<Size> filterColors(String id, String name, String code, String hex, String rgb, int page, int size, String direction, String... properties) {
-        return repository.filterColors(id, name, code, hex, rgb, page, size, direction, properties);
+    public List<Size> deleteAll(List<String> strings) {
+        return repository.deleteAll(strings);
     }
 }

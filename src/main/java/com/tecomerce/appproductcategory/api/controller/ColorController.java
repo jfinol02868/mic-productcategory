@@ -5,7 +5,6 @@ import com.tecomerce.appproductcategory.api.service.ColorApi;
 import com.tecomerce.appproductcategory.api.service.dto.ColorDTO;
 import com.tecomerce.appproductcategory.api.service.dto.SortEnum;
 import com.tecomerce.appproductcategory.application.usecase.ColorUseCase;
-import com.tecomerce.appproductcategory.domain.entity.Color;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,9 +46,9 @@ public class ColorController implements ColorApi {
     }
 
     @Override
-    public ResponseEntity<List<ColorDTO>> findAll(int page, int size, String sort, SortEnum direction) {
+    public ResponseEntity<List<ColorDTO>> findAllPaginated(int page, int size, String sort, SortEnum direction) {
         return new ResponseEntity<>(mapper.toDtoList(colorUserCase
-                .findAll(page, size, sort, direction.getValue())), HttpStatus.OK);
+                .findAllPaginated(page, size, sort, direction.getValue())), HttpStatus.OK);
     }
 
     @Override
@@ -72,5 +71,12 @@ public class ColorController implements ColorApi {
     @Override
     public ResponseEntity<List<ColorDTO>> deleteAll(List<String> ids) {
         return new ResponseEntity<>(mapper.toDtoList(colorUserCase.deleteAll(ids)),HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<ColorDTO>> filterColors(String id, String name, String code, String hex, String rgb,
+                                                       int page, int size, SortEnum direction, String... properties) {
+        return new ResponseEntity<>(mapper.toDtoList(colorUserCase
+                .filterColors(id, name, code, hex, rgb, page, size, direction.getValue(), properties)),HttpStatus.OK);
     }
 }

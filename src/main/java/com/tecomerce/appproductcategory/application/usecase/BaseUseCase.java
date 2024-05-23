@@ -37,7 +37,11 @@ public interface BaseUseCase<T, ID> {
         return null;
     }
 
-    default List<T> findAll(int page, int size, String sort, String direction) {
+    default List<T> findAllPaginated(int page, int size, String sort, String direction) {
+        return null;
+    }
+
+    default List<Color> filterColors(String id, String name, String code, String hex, String rgb, int page, int size, String direction, String... properties) {
         return null;
     }
 }

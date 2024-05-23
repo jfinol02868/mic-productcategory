@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -94,38 +93,28 @@ public class ColorRepositoryImpl implements ColorRepository {
     }
 
     @Override
-    public List<Color> findAll(int page, int size, String sort, String direction) {
+    public List<Color> findAllPaginated(int page, int size, String sort, String direction) {
         Sort.Direction dir = Sort.Direction.fromString(direction);
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(dir, sort));
         Page<ColorDocument> colorPage = cRepository.findAll(pageRequest);
         return mapper.toEntityList(colorPage.getContent());
     }
 
-
-    public Page<Color> filterColors(String id, String name, String code, String hex, String rgb, int page, int size, String sort, String direction) {
+    @Override
+    public List<Color> filterColors(String id, String name, String code, String hex, String rgb, int page, int size, String direction, String... properties) {
         Query query = new Query();
 
-        if (id != null) {
-            query.addCriteria(Criteria.where("id").is(id));
-        }
-        if (name != null) {
-            query.addCriteria(Criteria.where("name").is(name));
-        }
-        if (code != null) {
-            query.addCriteria(Criteria.where("code").is(code));
-        }
-        if (hex != null) {
-            query.addCriteria(Criteria.where("hex").is(hex));
-        }
-        if (rgb != null) {
-            query.addCriteria(Criteria.where("rgb").is(rgb));
-        }
+        if (Objects.nonNull(id)) query.addCriteria(Criteria.where("id").is(id));
+        if (Objects.nonNull(name)) query.addCriteria(Criteria.where("name").is(name));
+        if (Objects.nonNull(code)) query.addCriteria(Criteria.where("code").is(code));
+        if (Objects.nonNull(hex)) query.addCriteria(Criteria.where("hex").is(hex));
+        if (Objects.nonNull(rgb))  query.addCriteria(Criteria.where("rgb").is(rgb));
 
         Sort.Direction dir = Sort.Direction.fromString(direction);
-        PageRequest pageable = PageRequest.of(page, size, Sort.by(dir, sort));
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(dir, properties));
         query.with(pageable);
 
         List<ColorDocument> colorDocuments = mongoTemplate.find(query, ColorDocument.class);
-        return new PageImpl<>(mapper.toEntityList(colorDocuments), pageable, mongoTemplate.count(query, ColorDocument.class));
+        return mapper.toEntityList(colorDocuments);
     }
 }

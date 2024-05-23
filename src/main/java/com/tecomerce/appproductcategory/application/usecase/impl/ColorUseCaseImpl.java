@@ -14,7 +14,6 @@ public class ColorUseCaseImpl implements ColorUseCase {
 
     private final ColorRepository repository;
 
-
     @Override
     public Color create(Color entity) {
         return repository.create(entity);
@@ -56,7 +55,13 @@ public class ColorUseCaseImpl implements ColorUseCase {
     }
 
     @Override
-    public List<Color> findAll(int page, int size, String sort, String direction) {
-        return repository.findAll(page, size, sort, direction);
+    public List<Color> findAllPaginated(int page, int size, String sort, String direction) {
+        return repository.findAllPaginated(page, size, sort, direction);
+    }
+
+    @Override
+    public List<Color> filterColors(String id, String name, String code, String hex, String rgb, int page, int size,
+                                    String direction, String... properties) {
+        return repository.filterColors(id, name, code, hex, rgb, page, size, direction, properties);
     }
 }

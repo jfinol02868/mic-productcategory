@@ -18,52 +18,52 @@ public class ImageUseCaseImpl implements ImageUseCase {
 
     @Override
     public Image create(Image entity) {
-        return ImageUseCase.super.create(entity);
+        return repository.create(entity);
     }
 
     @Override
     public List<Image> createAll(List<Image> entities) {
-        return ImageUseCase.super.createAll(entities);
+        return repository.createAll(entities);
     }
 
     @Override
     public Image update(Image entity, String id) {
-        return ImageUseCase.super.update(entity, id);
+        return repository.update(entity, id);
     }
 
     @Override
     public List<Image> updateAll(List<Image> entities) {
-        return ImageUseCase.super.updateAll(entities);
+        return repository.updateAll(entities);
     }
 
     @Override
     public Image findById(String id) {
-        return ImageUseCase.super.findById(id);
+        return repository.findById(id);
     }
 
     @Override
     public List<Image> findByIds(List<String> ids) {
-        return ImageUseCase.super.findByIds(ids);
+        return repository.findByIds(ids);
     }
 
     @Override
     public void delete(String id) {
-        ImageUseCase.super.delete(id);
+        repository.delete(id);
     }
 
     @Override
     public void deleteAll(List<String> ids) {
-        ImageUseCase.super.deleteAll(ids);
+        repository.deleteAll(ids);
     }
 
     @Override
     public List<Image> findAllPaginated(int page, int size, String sort, String direction) {
-        return ImageUseCase.super.findAllPaginated(page, size, sort, direction);
+        return repository.findAllPaginated(page, size, sort, direction);
     }
 
     @Override
     public List<Image> filterColors(String id, String name, String code, String hex, String rgb, int page, int size, String direction, String... properties) {
-        return ImageUseCase.super.filterColors(id, name, code, hex, rgb, page, size, direction, properties);
+        return repository.filterColors(id, name, code, hex, rgb, page, size, direction, properties);
     }
 
     @Override

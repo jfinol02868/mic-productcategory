@@ -12,9 +12,10 @@ spring:
 
   data:
     mongodb:
-      database: micro
-      username: jfinol02
-      password: jfinol02
+      #uri: mongodb://jfinol02:jfinol02@localhost:27017/product
+      database: product
+      username: puser
+      password: f9XFVDqUNECTqkPq2JHD
       host: localhost
       port: 27017
 
@@ -28,6 +29,7 @@ logging:
 
 app:
   environment: DES
+  micro: PRODUCT
 
 
 

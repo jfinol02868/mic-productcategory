@@ -5,7 +5,6 @@ import com.tecomerce.appproductcategory.api.service.SizeApi;
 import com.tecomerce.appproductcategory.api.service.dto.SizeDTO;
 import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
 import com.tecomerce.appproductcategory.application.usecase.SizeUseCase;
-import com.tecomerce.appproductcategory.infrastructure.bd.repository.SizeRepositoryAdapter;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

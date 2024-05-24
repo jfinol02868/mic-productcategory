@@ -6,7 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -36,8 +39,10 @@ public class Product {
     private Integer minimum;
     private Integer maximum;
     private EnumStatus stockStatus;
+    private ZonedDateTime createAt;
 
-
-
-
+    public void dateOfCreation() {
+        if(Objects.nonNull(this.createAt)) return;
+        this.createAt = ZonedDateTime.now(ZoneId.of("UTC"));
+    }
 }

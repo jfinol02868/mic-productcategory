@@ -16,11 +16,13 @@ public class ColorUseCaseImpl implements ColorUseCase {
 
     @Override
     public Color create(Color entity) {
+        //entity.dateOfCreation();
         return repository.create(entity);
     }
 
     @Override
     public List<Color> createAll(List<Color> entities) {
+        entities.forEach(Color::dateOfCreation);
         return repository.createAll(entities);
     }
 

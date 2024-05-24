@@ -4,18 +4,24 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.ZonedDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@TypeAlias("category")
+@Document(collection = "categories")
 public class CategoryDocument {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String name;
     private String description;
     private String parentId;
     private String status;
+    private ZonedDateTime createAt;
 }

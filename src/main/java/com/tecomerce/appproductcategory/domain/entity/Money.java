@@ -17,4 +17,5 @@ public class Money {
     private String currency;
     private BigDecimal amount;
 
+
 }

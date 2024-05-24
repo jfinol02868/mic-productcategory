@@ -1,11 +1,14 @@
 package com.tecomerce.appproductcategory.api.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tecomerce.appproductcategory.domain.valueobject.enums.EnumStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Data
@@ -36,6 +39,9 @@ public class ProductDTO {
     private Integer minimum;
     private Integer maximum;
     private EnumStatus stockStatus;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Schema(description = "Date of creation",example = "2024-05-24T11:30:00-04:00")
+    private ZonedDateTime createAt;
 
 
 

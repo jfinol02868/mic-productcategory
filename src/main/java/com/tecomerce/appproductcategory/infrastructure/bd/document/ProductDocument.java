@@ -2,10 +2,7 @@ package com.tecomerce.appproductcategory.infrastructure.bd.document;
 
 import com.tecomerce.appproductcategory.domain.entity.Money;
 import com.tecomerce.appproductcategory.domain.valueobject.enums.EnumStatus;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductDocument {
 
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Id
     private String id;
     private String name;
     private String description;

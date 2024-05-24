@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.ZonedDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -23,4 +25,5 @@ public class SizeDocument {
     private String description;
     private String type;
     private String size;
+    private ZonedDateTime createAt;
 }

@@ -12,13 +12,14 @@ import static java.lang.String.join;
 @Component
 public class IdGenerator {
 
-    private static final String DELIMITER = "::";
-
+    @Value("${app.micro}")
+    private String micro;
     @Value("${app.environment}")
     private String environment;
+    private static final String DELIMITER = "::";
 
     public String generateId(final Class<?> clazz) {
-        return join(DELIMITER, getAlias(clazz), getUUID(), environment).toUpperCase();
+        return join(DELIMITER, micro, getAlias(clazz), getUUID(), environment).toUpperCase();
     }
 
     protected String getAlias(final Class<?> clazz) {

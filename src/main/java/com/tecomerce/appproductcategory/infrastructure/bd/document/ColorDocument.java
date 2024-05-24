@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.ZonedDateTime;
+
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -22,4 +25,5 @@ public class ColorDocument {
     private String code;
     private String hex;
     private String rgb;
+    private ZonedDateTime createAt;
 }

@@ -1,7 +1,5 @@
 package com.tecomerce.appproductcategory.application.usecase;
 
-import com.tecomerce.appproductcategory.domain.entity.Color;
-
 import java.util.List;
 
 public interface BaseUseCase<T, ID> {

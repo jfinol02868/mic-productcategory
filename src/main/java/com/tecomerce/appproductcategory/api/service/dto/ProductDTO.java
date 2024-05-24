@@ -34,7 +34,6 @@ public class ProductDTO {
     private List<String> size;
     private List<String> categories;
     private List<String> location;
-    private MoneyDTO price;
     private Integer quantity;
     private Integer minimum;
     private Integer maximum;

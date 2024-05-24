@@ -5,6 +5,8 @@ import com.tecomerce.appproductcategory.api.service.ColorApi;
 import com.tecomerce.appproductcategory.api.service.dto.ColorDTO;
 import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
 import com.tecomerce.appproductcategory.application.usecase.ColorUseCase;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,68 +18,69 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/v1/colors")
+@Tags(value = {@Tag(name = "Color", description = "Color API")})
 public class ColorController implements ColorApi {
 
     private final ColorDtoMapper mapper;
-    private final ColorUseCase userCase;
+    private final ColorUseCase useCase;
 
     @Override
     public ResponseEntity<ColorDTO> create(ColorDTO entity) {
-        return new ResponseEntity<>(mapper.toDto(userCase.create(
+        return new ResponseEntity<>(mapper.toDto(useCase.create(
                 mapper.toEntity(entity))), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<ColorDTO> update(ColorDTO entity, String id) {
-        return new ResponseEntity<>(mapper.toDto(userCase.update(
+        return new ResponseEntity<>(mapper.toDto(useCase.update(
                 mapper.toEntity(entity), id)), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<ColorDTO> findById(String id) {
-        return new ResponseEntity<>(mapper.toDto(userCase.findById(id)),
+        return new ResponseEntity<>(mapper.toDto(useCase.findById(id)),
                 HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> delete(String id) {
-        userCase.delete(id);
+        useCase.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @Override
     public ResponseEntity<List<ColorDTO>> findAllPaginated(int page, int size, String sort, SortEnum direction) {
-        return new ResponseEntity<>(mapper.toDtoList(userCase
+        return new ResponseEntity<>(mapper.toDtoList(useCase
                 .findAllPaginated(page, size, sort, direction.getValue())), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<ColorDTO>> updateAll(List<ColorDTO> entities) {
-        return new ResponseEntity<>(mapper.toDtoList(userCase
+        return new ResponseEntity<>(mapper.toDtoList(useCase
                 .updateAll(mapper.toEntityList(entities))), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<List<ColorDTO>> findByIds(List<String> ids) {
-        return new ResponseEntity<>(mapper.toDtoList(userCase.findByIds(ids)), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toDtoList(useCase.findByIds(ids)), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<ColorDTO>> createAll(List<ColorDTO> entities) {
-        return new ResponseEntity<>(mapper.toDtoList(userCase
+        return new ResponseEntity<>(mapper.toDtoList(useCase
                 .createAll(mapper.toEntityList(entities))), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> deleteAll(List<String> ids) {
-        userCase.deleteAll(ids);
+        useCase.deleteAll(ids);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override
     public ResponseEntity<List<ColorDTO>> filterColors(String id, String name, String code, String hex, String rgb,
                                                        int page, int size, SortEnum direction, String... properties) {
-        return new ResponseEntity<>(mapper.toDtoList(userCase
+        return new ResponseEntity<>(mapper.toDtoList(useCase
                 .filterColors(id, name, code, hex, rgb, page, size, direction.getValue(), properties)),HttpStatus.OK);
     }
 }

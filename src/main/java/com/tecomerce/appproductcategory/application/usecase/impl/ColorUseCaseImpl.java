@@ -16,7 +16,7 @@ public class ColorUseCaseImpl implements ColorUseCase {
 
     @Override
     public Color create(Color entity) {
-        //entity.dateOfCreation();
+        entity.dateOfCreation();
         return repository.create(entity);
     }
 

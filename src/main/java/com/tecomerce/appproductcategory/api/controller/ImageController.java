@@ -1,10 +1,10 @@
 package com.tecomerce.appproductcategory.api.controller;
 
-import com.tecomerce.appproductcategory.api.mapper.SizeDtoMapper;
-import com.tecomerce.appproductcategory.api.service.SizeApi;
-import com.tecomerce.appproductcategory.api.service.dto.SizeDTO;
+import com.tecomerce.appproductcategory.api.mapper.ImageDtoMapper;
+import com.tecomerce.appproductcategory.api.service.ImageApi;
+import com.tecomerce.appproductcategory.api.service.dto.ImageDTO;
 import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
-import com.tecomerce.appproductcategory.application.usecase.SizeUseCase;
+import com.tecomerce.appproductcategory.application.usecase.ImageUseCase;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.AllArgsConstructor;
@@ -17,53 +17,52 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/v1/sizes")
-@Tags(value = {@Tag(name = "Size", description = "Size API")})
-public class SizeController implements SizeApi {
+@RequestMapping("/v1/images")
+@Tags(value = {@Tag(name = "Image", description = "Image API")})
+public class ImageController implements ImageApi {
 
-    private final SizeUseCase useCase;
-    private final SizeDtoMapper mapper;
+    private ImageDtoMapper mapper;
+    private final ImageUseCase useCase;
 
     @Override
-    public ResponseEntity<SizeDTO> create(SizeDTO entity) {
+    public ResponseEntity<ImageDTO> create(ImageDTO entity) {
         return new ResponseEntity<>(mapper.toDto(useCase.create(
                 mapper.toEntity(entity))), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<List<SizeDTO>> createAll(List<SizeDTO> entities) {
+    public ResponseEntity<List<ImageDTO>> createAll(List<ImageDTO> entities) {
         return new ResponseEntity<>(mapper.toDtoList(useCase
-                .createAll(mapper.toEntityList(entities))), HttpStatus.CREATED);
+                .createAll(mapper.toEntityList(entities))), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<SizeDTO> update(SizeDTO entity, String id) {
+    public ResponseEntity<ImageDTO> update(ImageDTO entity, String id) {
         return new ResponseEntity<>(mapper.toDto(useCase.update(
                 mapper.toEntity(entity), id)), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<List<SizeDTO>> updateAll(List<SizeDTO> entities) {
+    public ResponseEntity<List<ImageDTO>> updateAll(List<ImageDTO> entities) {
         return new ResponseEntity<>(mapper.toDtoList(useCase
                 .updateAll(mapper.toEntityList(entities))), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<SizeDTO> findById(String id) {
+    public ResponseEntity<ImageDTO> findById(String id) {
         return new ResponseEntity<>(mapper.toDto(useCase.findById(id)),
                 HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<SizeDTO>> findByIds(List<String> id) {
-        return new ResponseEntity<>(mapper.toDtoList(useCase
-                .findByIds(id)), HttpStatus.OK);
+    public ResponseEntity<List<ImageDTO>> findByIds(List<String> ids) {
+        return new ResponseEntity<>(mapper.toDtoList(useCase.findByIds(ids)), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> delete(String id) {
         useCase.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
     @Override
@@ -73,16 +72,15 @@ public class SizeController implements SizeApi {
     }
 
     @Override
-    public ResponseEntity<List<SizeDTO>> findAllPaginated(int page, int size, String sort, SortEnum direction) {
+    public ResponseEntity<List<ImageDTO>> findAllPaginated(int page, int size, String sort, SortEnum direction) {
         return new ResponseEntity<>(mapper.toDtoList(useCase
                 .findAllPaginated(page, size, sort, direction.getValue())), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<SizeDTO>> filterColors(String id, String name, String code, String description, String
-            type, String size, int page, int records, SortEnum direction, String... properties) {
-        return new ResponseEntity<>(mapper.toDtoList(useCase
-                .filterSize(id, name, code, description, type, size, page, records, direction.getValue(), properties)),
-                HttpStatus.OK);
+    public ResponseEntity<List<ImageDTO>> filters(String filterProperties, int page, int size, SortEnum direction,
+                                                  String... sortProperties) {
+        return new ResponseEntity<>(mapper.toDtoList(useCase.filters(filterProperties, page, size, direction.getValue(),
+                sortProperties)), HttpStatus.OK);
     }
 }

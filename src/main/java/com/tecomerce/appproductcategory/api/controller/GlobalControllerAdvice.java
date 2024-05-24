@@ -5,7 +5,6 @@ import com.tecomerce.appproductcategory.domain.exception.EntityNotFoundException
 import com.tecomerce.appproductcategory.domain.valueobject.enums.MessageEnum;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

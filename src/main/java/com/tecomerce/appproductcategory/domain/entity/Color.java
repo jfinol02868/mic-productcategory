@@ -11,8 +11,8 @@ import java.util.Objects;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Color {
 
     private String id;

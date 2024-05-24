@@ -1,4 +1,7 @@
 package com.tecomerce.appproductcategory.infrastructure.bd.repository;
 
-public interface ProductRepositoryAdapter {
+import com.tecomerce.appproductcategory.infrastructure.bd.document.ProductDocument;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface ProductRepositoryAdapter extends MongoRepository<ProductDocument, String> {
 }

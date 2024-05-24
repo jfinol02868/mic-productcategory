@@ -2,6 +2,7 @@ package com.tecomerce.appproductcategory.api.controller;
 
 import com.tecomerce.appproductcategory.api.service.dto.MessageResponseDTO;
 import com.tecomerce.appproductcategory.domain.exception.EntityNotFoundException;
+import com.tecomerce.appproductcategory.domain.exception.ErrorMappingException;
 import com.tecomerce.appproductcategory.domain.valueobject.enums.MessageEnum;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -19,10 +20,21 @@ public class GlobalControllerAdvice {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EntityNotFoundException.class)
-    public MessageResponseDTO handlerEntityNotFoundException(EntityNotFoundException ex) {
+    public MessageResponseDTO handlerEntityNotFoundException() {
         return MessageResponseDTO.builder()
                 .code("E001")
                 .message(MessageEnum.ENTITY_NOT_FOUND.getMessage())
+                .details(new ArrayList<>())
+                .timeStamp(ZonedDateTime.now())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(ErrorMappingException.class)
+    public MessageResponseDTO handlerErrorMappingException() {
+        return MessageResponseDTO.builder()
+                .code("M001")
+                .message(MessageEnum.ERROR_MAPPING.getMessage())
                 .details(new ArrayList<>())
                 .timeStamp(ZonedDateTime.now())
                 .build();

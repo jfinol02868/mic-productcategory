@@ -1,6 +1,5 @@
 package com.tecomerce.appproductcategory.application.usecase;
 
-import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
 import com.tecomerce.appproductcategory.domain.entity.Size;
 
 import java.util.List;

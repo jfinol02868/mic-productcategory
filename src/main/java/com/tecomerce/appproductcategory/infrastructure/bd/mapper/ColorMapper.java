@@ -18,5 +18,4 @@ public interface ColorMapper {
 
     public List<ColorDocument> toDocumentList(List<Color> colors);
 
-    public List<Color> PagetoEntityList(Page<Color> colorPage);
 }

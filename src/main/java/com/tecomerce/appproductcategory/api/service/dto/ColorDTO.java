@@ -19,7 +19,6 @@ public class ColorDTO {
     @Schema(description = "Color id", example = "PRODUCT::COLOR::BA0EE851-37C9-4518-A54F-FB69FCC6F891::DES")
     private String id;
 
-
     @Schema(description = "Color name", example = "Negro")
     @NotNull(message = "The name cannot be null or empty.")
     private String name;

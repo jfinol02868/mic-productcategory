@@ -1,6 +1,5 @@
 package com.tecomerce.appproductcategory.application.usecase.impl;
 
-import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
 import com.tecomerce.appproductcategory.application.usecase.SizeUseCase;
 import com.tecomerce.appproductcategory.domain.entity.Size;
 import com.tecomerce.appproductcategory.domain.repository.SizeRepository;
@@ -17,11 +16,13 @@ public class SizeUseCaseImpl implements SizeUseCase {
 
     @Override
     public Size create(Size entity) {
+        entity.dateOfCreation();
         return repository.create(entity);
     }
 
     @Override
     public List<Size> createAll(List<Size> entities) {
+        entities.forEach(Size::dateOfCreation);
         return repository.createAll(entities);
     }
 

@@ -1,10 +1,10 @@
 package com.tecomerce.appproductcategory.api.controller;
 
-import com.tecomerce.appproductcategory.api.mapper.CategoryDtoMapper;
-import com.tecomerce.appproductcategory.api.service.CategoryApi;
-import com.tecomerce.appproductcategory.api.service.dto.CategoryDTO;
+import com.tecomerce.appproductcategory.api.mapper.LocationDtoMapper;
+import com.tecomerce.appproductcategory.api.service.LocationApi;
+import com.tecomerce.appproductcategory.api.service.dto.LocationDTO;
 import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
-import com.tecomerce.appproductcategory.application.usecase.CategoryUseCase;
+import com.tecomerce.appproductcategory.application.usecase.LocationUseCase;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.AllArgsConstructor;
@@ -17,44 +17,44 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/v1/categories")
-@Tags(value = {@Tag(name = "Category", description = "Category API")})
-public class CategoryController implements CategoryApi {
+@RequestMapping("/v1/locations")
+@Tags(value = {@Tag(name = "Location", description = "Location API")})
+public class LocationController implements LocationApi {
 
-    private final CategoryUseCase useCase;
-    private final CategoryDtoMapper mapper;
+    private final LocationUseCase useCase;
+    private final LocationDtoMapper mapper;
 
     @Override
-    public ResponseEntity<CategoryDTO> create(CategoryDTO entity) {
+    public ResponseEntity<LocationDTO> create(LocationDTO entity) {
         return new ResponseEntity<>(mapper.toDto(useCase.create(
                 mapper.toEntity(entity))), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<List<CategoryDTO>> createAll(List<CategoryDTO> entities) {
+    public ResponseEntity<List<LocationDTO>> createAll(List<LocationDTO> entities) {
         return new ResponseEntity<>(mapper.toDtoList((useCase.createAll(
                 mapper.toEntityList(entities)))), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<CategoryDTO> update(CategoryDTO entity, String id) {
+    public ResponseEntity<LocationDTO> update(LocationDTO entity, String id) {
         return new ResponseEntity<>(mapper.toDto(useCase.update(
                 mapper.toEntity(entity), id)), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<List<CategoryDTO>> updateAll(List<CategoryDTO> entities) {
+    public ResponseEntity<List<LocationDTO>> updateAll(List<LocationDTO> entities) {
         return new ResponseEntity<>(mapper.toDtoList(useCase.createAll(
                 mapper.toEntityList(entities))) , HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<CategoryDTO> findById(String id) {
+    public ResponseEntity<LocationDTO> findById(String id) {
         return new ResponseEntity<>(mapper.toDto(useCase.findById(id)), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<CategoryDTO>> findByIds(List<String> id) {
+    public ResponseEntity<List<LocationDTO>> findByIds(List<String> id) {
         return new ResponseEntity<>(mapper.toDtoList(useCase.findByIds(id)), HttpStatus.OK);
     }
 
@@ -71,13 +71,13 @@ public class CategoryController implements CategoryApi {
     }
 
     @Override
-    public ResponseEntity<List<CategoryDTO>> findAllPaginated(int page, int size, String sort, SortEnum direction) {
+    public ResponseEntity<List<LocationDTO>> findAllPaginated(int page, int size, String sort, SortEnum direction) {
         return new ResponseEntity<>(mapper.toDtoList(
                 useCase.findAllPaginated(page, size, sort, direction.getValue())), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<CategoryDTO>> filters(String filterProperties, int page, int size,
+    public ResponseEntity<List<LocationDTO>> filters(String filterProperties, int page, int size,
                                                      SortEnum direction, String... sortProperties) {
         return new ResponseEntity<>(mapper.toDtoList(
                 useCase.filters(filterProperties, page, size, direction.getValue(), sortProperties)), HttpStatus.OK);

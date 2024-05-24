@@ -18,11 +18,13 @@ public class ImageUseCaseImpl implements ImageUseCase {
 
     @Override
     public Image create(Image entity) {
+        entity.dateOfCreation();
         return repository.create(entity);
     }
 
     @Override
     public List<Image> createAll(List<Image> entities) {
+        entities.forEach(Image::dateOfCreation);
         return repository.createAll(entities);
     }
 

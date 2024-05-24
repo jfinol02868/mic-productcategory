@@ -1,7 +1,5 @@
 package com.tecomerce.appproductcategory.infrastructure.bd.document;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +16,7 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @TypeAlias("image")
 @Document(collection = "images")
-public class ImageDocument {
+public class ImagesDocuments {
 
     @Id
     private String id;

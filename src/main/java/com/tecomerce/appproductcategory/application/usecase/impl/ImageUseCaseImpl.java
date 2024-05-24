@@ -43,7 +43,7 @@ public class ImageUseCaseImpl implements ImageUseCase {
 
     @Override
     public List<Image> findByIds(List<String> ids) {
-        return repository.findByIds(ids);
+       return repository.findByIds(ids);
     }
 
     @Override

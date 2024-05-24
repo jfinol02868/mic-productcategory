@@ -3,8 +3,7 @@ package com.tecomerce.appproductcategory.infrastructure.bd.repository.impl;
 import com.tecomerce.appproductcategory.domain.entity.Image;
 import com.tecomerce.appproductcategory.domain.exception.EntityNotFoundException;
 import com.tecomerce.appproductcategory.domain.repository.ImageRepository;
-import com.tecomerce.appproductcategory.infrastructure.bd.document.ColorDocument;
-import com.tecomerce.appproductcategory.infrastructure.bd.document.ImageDocument;
+import com.tecomerce.appproductcategory.infrastructure.bd.document.ImagesDocuments;
 import com.tecomerce.appproductcategory.infrastructure.bd.mapper.ImageMapper;
 import com.tecomerce.appproductcategory.infrastructure.bd.repository.ImageRepositoryAdapter;
 import com.tecomerce.appproductcategory.infrastructure.util.IdGenerator;
@@ -30,6 +29,7 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 public class ImageRepositoryImpl implements ImageRepository {
 
+
     private final ImageMapper mapper;
     private final MongoTemplate mongoTemplate;
     private final IdGenerator idGenerator;
@@ -37,7 +37,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
     @Override
     public Image create(Image entity) {
-        if (Objects.isNull(entity.getId())) entity.setId(idGenerator.generateId(ImageDocument.class));
+        if (Objects.isNull(entity.getId())) entity.setId(idGenerator.generateId(ImagesDocuments.class));
         entity.dateOfCreation();
         return mapper.toEntity(repository.save(mapper.toDocument(entity)));
     }
@@ -45,14 +45,14 @@ public class ImageRepositoryImpl implements ImageRepository {
     @Override
     public List<Image> createAll(List<Image> entities) {
         entities = entities.stream().peek(entity -> {
-            if (Objects.isNull(entity.getId())) entity.setId(idGenerator.generateId(ColorDocument.class));
+            if (Objects.isNull(entity.getId())) entity.setId(idGenerator.generateId(ImagesDocuments.class));
         }).collect(Collectors.toList());
         return mapper.toEntityList(repository.saveAll(mapper.toDocumentList(entities)));
     }
 
     @Override
     public Image update(Image entity, String id) {
-        ImageDocument image = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        ImagesDocuments image = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entity.setId(id);
         BeanUtils.copyProperties(entity, image);
         return mapper.toEntity(repository.save(image));
@@ -99,7 +99,7 @@ public class ImageRepositoryImpl implements ImageRepository {
     public List<Image> findAllPaginated(int page, int size, String sort, String direction) {
         Sort.Direction dir = Sort.Direction.fromString(direction);
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(dir, sort));
-        Page<ImageDocument> image = repository.findAll(pageRequest);
+        Page<ImagesDocuments> image = repository.findAll(pageRequest);
         return mapper.toEntityList(image.getContent());
     }
 
@@ -123,6 +123,6 @@ public class ImageRepositoryImpl implements ImageRepository {
         PageRequest pageable = PageRequest.of(page, size, Sort.by(dir, sortProperties));
         query.with(pageable);
 
-        return mapper.toEntityList(mongoTemplate.find(query, ImageDocument.class));
+        return mapper.toEntityList(mongoTemplate.find(query, ImagesDocuments.class));
     }
 }

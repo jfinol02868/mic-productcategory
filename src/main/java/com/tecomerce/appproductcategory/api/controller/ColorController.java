@@ -2,6 +2,7 @@ package com.tecomerce.appproductcategory.api.controller;
 
 import com.tecomerce.appproductcategory.api.mapper.ColorDtoMapper;
 import com.tecomerce.appproductcategory.api.service.ColorApi;
+import com.tecomerce.appproductcategory.api.service.dto.CategoryDTO;
 import com.tecomerce.appproductcategory.api.service.dto.ColorDTO;
 import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
 import com.tecomerce.appproductcategory.application.usecase.ColorUseCase;
@@ -78,9 +79,7 @@ public class ColorController implements ColorApi {
     }
 
     @Override
-    public ResponseEntity<List<ColorDTO>> filterColors(String id, String name, String code, String hex, String rgb,
-                                                       int page, int size, SortEnum direction, String... properties) {
-        return new ResponseEntity<>(mapper.toDtoList(useCase
-                .filterColors(id, name, code, hex, rgb, page, size, direction.getValue(), properties)),HttpStatus.OK);
+    public ResponseEntity<List<ColorDTO>> filters(String filterProperties, int page, int size, SortEnum direction, String... sortProperties) {
+        return new ResponseEntity<>(mapper.toDtoList(useCase.filters(filterProperties, page, size, direction.getValue(), sortProperties)), HttpStatus.OK);
     }
 }

@@ -2,7 +2,9 @@ package com.tecomerce.appproductcategory.application.usecase.impl;
 
 import com.tecomerce.appproductcategory.application.usecase.ColorUseCase;
 import com.tecomerce.appproductcategory.domain.entity.Color;
+import com.tecomerce.appproductcategory.domain.entity.Image;
 import com.tecomerce.appproductcategory.domain.repository.ColorRepository;
+import com.tecomerce.appproductcategory.domain.util.MapperUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ColorUseCaseImpl implements ColorUseCase {
 
+    private final MapperUtil mapperUtil;
     private final ColorRepository repository;
 
     @Override
@@ -62,8 +65,8 @@ public class ColorUseCaseImpl implements ColorUseCase {
     }
 
     @Override
-    public List<Color> filterColors(String id, String name, String code, String hex, String rgb, int page, int size,
-                                    String direction, String... properties) {
-        return repository.filterColors(id, name, code, hex, rgb, page, size, direction, properties);
+    public List<Color> filters(String filterProperties, int page, int size, String direction, String... sortProperties) {
+        Color color = (Color) mapperUtil.mappingEntity(filterProperties, Color.class);
+        return repository.filters(color, page, size, direction, sortProperties);
     }
 }

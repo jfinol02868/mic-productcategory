@@ -2,6 +2,7 @@ package com.tecomerce.appproductcategory.api.controller;
 
 import com.tecomerce.appproductcategory.api.mapper.SizeDtoMapper;
 import com.tecomerce.appproductcategory.api.service.SizeApi;
+import com.tecomerce.appproductcategory.api.service.dto.ProductDTO;
 import com.tecomerce.appproductcategory.api.service.dto.SizeDTO;
 import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
 import com.tecomerce.appproductcategory.application.usecase.SizeUseCase;
@@ -79,10 +80,9 @@ public class SizeController implements SizeApi {
     }
 
     @Override
-    public ResponseEntity<List<SizeDTO>> filterColors(String id, String name, String code, String description, String
-            type, String size, int page, int records, SortEnum direction, String... properties) {
-        return new ResponseEntity<>(mapper.toDtoList(useCase
-                .filterSize(id, name, code, description, type, size, page, records, direction.getValue(), properties)),
-                HttpStatus.OK);
+    public ResponseEntity<List<SizeDTO>> filters(String filterProperties, int page, int size, SortEnum direction,
+                                                 String... sortProperties) {
+        return new ResponseEntity<>(mapper.toDtoList(useCase.filters(filterProperties, page, size, direction.getValue(),
+                sortProperties)), HttpStatus.OK);
     }
 }

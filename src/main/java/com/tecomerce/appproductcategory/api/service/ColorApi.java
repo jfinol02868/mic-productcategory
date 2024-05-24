@@ -1,5 +1,6 @@
 package com.tecomerce.appproductcategory.api.service;
 
+import com.tecomerce.appproductcategory.api.service.dto.CategoryDTO;
 import com.tecomerce.appproductcategory.api.service.dto.ColorDTO;
 import com.tecomerce.appproductcategory.api.service.dto.MessageResponseDTO;
 import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
@@ -123,22 +124,19 @@ public interface ColorApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    @GetMapping("/color-filter")
-    @Operation( operationId = "get-colors-filter", description = "Get colors filter.")
-    @ApiResponse(responseCode = "200", content = @Content(mediaType = MEDIA_TYPE,  array = @ArraySchema(schema = @Schema(implementation = ColorDTO.class))))
+
+    @GetMapping("/category-filter")
+    @Operation( operationId = "get-categories-filter", description = "Get categories filter.")
+    @ApiResponse(responseCode = "200", content = @Content(mediaType = MEDIA_TYPE,  array = @ArraySchema(schema = @Schema(implementation = CategoryDTO.class))))
     @ApiResponse(responseCode = "401", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "403", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "500", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
-    default ResponseEntity<List<ColorDTO>> filterColors(
-            @RequestParam(required = false) String id,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String code,
-            @RequestParam(required = false) String hex,
-            @RequestParam(required = false) String rgb,
+    default ResponseEntity<List<ColorDTO>> filters(
+            @RequestParam(required = false, defaultValue = "{\"name\":\"Negro\", \"code\":\"000001\", \"hex\":\"#000000\"}") String filterProperties,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false) SortEnum direction,
-            @RequestParam(required = false) String... properties) {
+            @RequestParam(required = false, defaultValue = "createAt") String... sortProperties) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 

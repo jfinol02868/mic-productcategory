@@ -3,6 +3,7 @@ package com.tecomerce.appproductcategory.application.usecase.impl;
 import com.tecomerce.appproductcategory.application.usecase.SizeUseCase;
 import com.tecomerce.appproductcategory.domain.entity.Size;
 import com.tecomerce.appproductcategory.domain.repository.SizeRepository;
+import com.tecomerce.appproductcategory.domain.util.MapperUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SizeUseCaseImpl implements SizeUseCase {
 
+    private final MapperUtil mapperUtil;
     private final SizeRepository repository;
 
     @Override
@@ -62,7 +64,8 @@ public class SizeUseCaseImpl implements SizeUseCase {
     }
 
     @Override
-    public List<Size> filterSize(String id, String name, String code, String description, String type, String size, int page, int records, String direction, String... properties) {
-        return repository.filterSize(id, name, code, description, type, size, page, records, direction, properties);
+    public List<Size> filters(String filterProperties, int page, int size, String direction, String... sortProperties) {
+        Size entity = (Size) mapperUtil.mappingEntity(filterProperties, Size.class);
+        return repository.filters(entity, page, size, direction, sortProperties);
     }
 }

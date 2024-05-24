@@ -64,11 +64,6 @@ public class ImageUseCaseImpl implements ImageUseCase {
     }
 
     @Override
-    public List<Image> filterColors(String id, String name, String code, String hex, String rgb, int page, int size, String direction, String... properties) {
-        return repository.filterColors(id, name, code, hex, rgb, page, size, direction, properties);
-    }
-
-    @Override
     public List<Image> filters(String filterProperties, int page, int size, String direction, String... sortProperties) {
         Image image = (Image) mapperUtil.mappingEntity(filterProperties, Image.class);
         return repository.filters(image, page, size, direction, sortProperties);

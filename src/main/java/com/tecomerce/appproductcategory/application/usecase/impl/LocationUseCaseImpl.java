@@ -64,11 +64,6 @@ public class LocationUseCaseImpl implements LocationUseCase {
     }
 
     @Override
-    public List<Location> filterColors(String id, String name, String code, String hex, String rgb, int page, int size, String direction, String... properties) {
-        return repository.filterColors(id, name, code, hex, rgb, page, size, direction, properties);
-    }
-
-    @Override
     public List<Location> filters(String filterProperties, int page, int size, String direction, String... sortProperties) {
         Location location = (Location) mapperUtil.mappingEntity(filterProperties, Location.class);
         return repository.filters(location, page, size, direction, sortProperties);

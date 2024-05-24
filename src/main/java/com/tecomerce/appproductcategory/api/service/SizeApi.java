@@ -1,5 +1,6 @@
 package com.tecomerce.appproductcategory.api.service;
 
+import com.tecomerce.appproductcategory.api.service.dto.ProductDTO;
 import com.tecomerce.appproductcategory.api.service.dto.SizeDTO;
 import com.tecomerce.appproductcategory.api.service.dto.MessageResponseDTO;
 import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
@@ -123,25 +124,18 @@ public interface SizeApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    @GetMapping("/size-filter")
-    @Operation( operationId = "get-sizes-filter", description = "Get sizes filter.")
-    @ApiResponse(responseCode = "200", content = @Content(mediaType = MEDIA_TYPE,  array = @ArraySchema(schema = @Schema(implementation = SizeDTO.class))))
+    @GetMapping("/Location-filter")
+    @Operation( operationId = "get-products-filter", description = "Get products filter.")
+    @ApiResponse(responseCode = "200", content = @Content(mediaType = MEDIA_TYPE,  array = @ArraySchema(schema = @Schema(implementation = ProductDTO.class))))
     @ApiResponse(responseCode = "401", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "403", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "500", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
-    default ResponseEntity<List<SizeDTO>> filterColors(
-            @RequestParam(required = false) String id,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String code,
-            @RequestParam(required = false) String description,
-            @RequestParam(required = false) String type,
-            @RequestParam(required = false) String size,
+    default ResponseEntity<List<SizeDTO>> filters(
+            @RequestParam(required = false, defaultValue = "{\"name\":\"Large\", \"code\":\"L\", \"description\":\"Large size for adults.\"}") String filterProperties,
             @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "10") int records,
+            @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false) SortEnum direction,
-            @RequestParam(required = false) String... properties) {
+            @RequestParam(required = false, defaultValue = "createAt") String... sortProperties) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
-
-
 }

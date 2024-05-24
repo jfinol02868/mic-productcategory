@@ -123,7 +123,7 @@ public interface LocationApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    @GetMapping("/Location-filter")
+    @GetMapping("/location-filter")
     @Operation( operationId = "get-locations-filter", description = "Get locations filter.")
     @ApiResponse(responseCode = "200", content = @Content(mediaType = MEDIA_TYPE,  array = @ArraySchema(schema = @Schema(implementation = LocationDTO.class))))
     @ApiResponse(responseCode = "401", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))

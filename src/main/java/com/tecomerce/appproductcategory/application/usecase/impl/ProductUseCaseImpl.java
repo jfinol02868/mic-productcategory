@@ -2,7 +2,6 @@ package com.tecomerce.appproductcategory.application.usecase.impl;
 
 import com.tecomerce.appproductcategory.application.usecase.ProductUseCase;
 import com.tecomerce.appproductcategory.domain.entity.Product;
-import com.tecomerce.appproductcategory.domain.entity.Size;
 import com.tecomerce.appproductcategory.domain.repository.ProductRepository;
 import com.tecomerce.appproductcategory.domain.util.MapperUtil;
 import lombok.AllArgsConstructor;
@@ -62,11 +61,6 @@ public class ProductUseCaseImpl implements ProductUseCase {
     @Override
     public List<Product> findAllPaginated(int page, int size, String sort, String direction) {
         return repository.findAllPaginated(page, size, sort, direction);
-    }
-
-    @Override
-    public List<Product> filterColors(String id, String name, String code, String hex, String rgb, int page, int size, String direction, String... properties) {
-        return repository.filterColors(id, name, code, hex, rgb, page, size, direction, properties);
     }
 
     @Override

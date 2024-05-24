@@ -1,5 +1,6 @@
 package com.tecomerce.appproductcategory.infrastructure.bd.repository.impl;
 
+import com.tecomerce.appproductcategory.domain.entity.Color;
 import com.tecomerce.appproductcategory.domain.entity.Size;
 import com.tecomerce.appproductcategory.domain.exception.EntityNotFoundException;
 import com.tecomerce.appproductcategory.domain.repository.SizeRepository;
@@ -19,6 +20,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -102,18 +104,22 @@ public class SizeRepositoryImpl implements SizeRepository {
     }
 
     @Override
-    public List<Size> filterSize(String id, String name, String code, String description, String type, String size, int page, int records, String direction, String... properties) {
+    public List<Size> filters(Size filterProperties, int page, int size, String direction, String... sortProperties) {
         Query query = new Query();
+        Field[] fields = Color.class.getDeclaredFields();
 
-        if (Objects.nonNull(id)) query.addCriteria(Criteria.where("id").is(id));
-        if (Objects.nonNull(name)) query.addCriteria(Criteria.where("name").is(name));
-        if (Objects.nonNull(code)) query.addCriteria(Criteria.where("code").is(code));
-        if (Objects.nonNull(description)) query.addCriteria(Criteria.where("description").is(description));
-        if (Objects.nonNull(type))  query.addCriteria(Criteria.where("type").is(type));
-        if (Objects.nonNull(size))  query.addCriteria(Criteria.where("size").is(size));
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                Object value = field.get(filterProperties);
+                if (Objects.nonNull(value)) query.addCriteria(Criteria.where(field.getName()).is(value));
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
 
         Sort.Direction dir = Sort.Direction.fromString(direction);
-        PageRequest pageable = PageRequest.of(page, records, Sort.by(dir, properties));
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(dir, sortProperties));
         query.with(pageable);
 
         return mapper.toEntityList(mongoTemplate.find(query, SizeDocument.class));

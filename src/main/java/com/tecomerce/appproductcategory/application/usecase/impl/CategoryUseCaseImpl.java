@@ -64,11 +64,6 @@ public class CategoryUseCaseImpl implements CategoryUseCase {
     }
 
     @Override
-    public List<Category> filterColors(String id, String name, String code, String hex, String rgb, int page, int size, String direction, String... properties) {
-        return repository.filterColors(id, name, code, hex, rgb, page, size, direction, properties);
-    }
-
-    @Override
     public List<Category> filters(String filterProperties, int page, int size, String direction, String... sortProperties) {
         Category category = (Category) mapperUtil.mappingEntity(filterProperties, Category.class);
         return repository.filters(category, page, size, direction, sortProperties);

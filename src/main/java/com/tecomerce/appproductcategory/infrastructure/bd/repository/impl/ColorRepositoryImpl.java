@@ -1,9 +1,11 @@
 package com.tecomerce.appproductcategory.infrastructure.bd.repository.impl;
 
 import com.tecomerce.appproductcategory.domain.entity.Color;
+import com.tecomerce.appproductcategory.domain.entity.Image;
 import com.tecomerce.appproductcategory.domain.exception.EntityNotFoundException;
 import com.tecomerce.appproductcategory.domain.repository.ColorRepository;
 import com.tecomerce.appproductcategory.infrastructure.bd.document.ColorDocument;
+import com.tecomerce.appproductcategory.infrastructure.bd.document.ImagesDocuments;
 import com.tecomerce.appproductcategory.infrastructure.bd.mapper.ColorMapper;
 import com.tecomerce.appproductcategory.infrastructure.bd.repository.ColorRepositoryAdapter;
 import com.tecomerce.appproductcategory.infrastructure.util.IdGenerator;
@@ -18,6 +20,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -101,17 +104,22 @@ public class ColorRepositoryImpl implements ColorRepository {
     }
 
     @Override
-    public List<Color> filterColors(String id, String name, String code, String hex, String rgb, int page, int size, String direction, String... properties) {
+    public List<Color> filters(Color color, int page, int size, String direction, String... sortProperties) {
         Query query = new Query();
+        Field[] fields = Color.class.getDeclaredFields();
 
-        if (Objects.nonNull(id)) query.addCriteria(Criteria.where("id").is(id));
-        if (Objects.nonNull(name)) query.addCriteria(Criteria.where("name").is(name));
-        if (Objects.nonNull(code)) query.addCriteria(Criteria.where("code").is(code));
-        if (Objects.nonNull(hex)) query.addCriteria(Criteria.where("hex").is(hex));
-        if (Objects.nonNull(rgb))  query.addCriteria(Criteria.where("rgb").is(rgb));
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                Object value = field.get(color);
+                if (Objects.nonNull(value)) query.addCriteria(Criteria.where(field.getName()).is(value));
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
 
         Sort.Direction dir = Sort.Direction.fromString(direction);
-        PageRequest pageable = PageRequest.of(page, size, Sort.by(dir, properties));
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(dir, sortProperties));
         query.with(pageable);
 
         return mapper.toEntityList(mongoTemplate.find(query, ColorDocument.class));

@@ -1,6 +1,5 @@
 package com.tecomerce.appproductcategory.infrastructure.bd.repository.impl;
 
-import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
 import com.tecomerce.appproductcategory.domain.entity.Size;
 import com.tecomerce.appproductcategory.domain.exception.EntityNotFoundException;
 import com.tecomerce.appproductcategory.domain.repository.SizeRepository;

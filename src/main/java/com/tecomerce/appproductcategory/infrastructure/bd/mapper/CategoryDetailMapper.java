@@ -9,13 +9,13 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CategoryDetailMapper {
 
-    public CategoryDetail toEntity(CategoryDetailDocument categoryDocument);
+    public CategoryDetail toEntity(CategoryDetailDocument categoryDetailDocument);
 
-    public CategoryDetailDocument toDocument(CategoryDetail category);
+    public CategoryDetailDocument toDocument(CategoryDetail categoryDetail);
 
-    public List<CategoryDetail> toEntityList(List<CategoryDetailDocument> categoryDocuments);
+    public List<CategoryDetail> toEntityList(List<CategoryDetailDocument> categoryDetailDocuments);
 
-    public List<CategoryDetailDocument> toDocumentList(List<CategoryDetail> categories);
+    public List<CategoryDetailDocument> toDocumentList(List<CategoryDetail> categoryDetails);
 
 
 }

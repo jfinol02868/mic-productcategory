@@ -1,10 +1,15 @@
 package com.tecomerce.appproductcategory.infrastructure.bd.repository.impl;
 
 import com.tecomerce.appproductcategory.domain.entity.Category;
+import com.tecomerce.appproductcategory.domain.entity.CategoryDetail;
 import com.tecomerce.appproductcategory.domain.exception.EntityNotFoundException;
+import com.tecomerce.appproductcategory.domain.repository.CategoryDetailRepository;
 import com.tecomerce.appproductcategory.domain.repository.CategoryRepository;
+import com.tecomerce.appproductcategory.infrastructure.bd.document.CategoryDetailDocument;
 import com.tecomerce.appproductcategory.infrastructure.bd.document.CategoryDocument;
+import com.tecomerce.appproductcategory.infrastructure.bd.mapper.CategoryDetailMapper;
 import com.tecomerce.appproductcategory.infrastructure.bd.mapper.CategoryMapper;
+import com.tecomerce.appproductcategory.infrastructure.bd.repository.CategoryDetailRepositoryAdapter;
 import com.tecomerce.appproductcategory.infrastructure.bd.repository.CategoryRepositoryAdapter;
 import com.tecomerce.appproductcategory.infrastructure.util.IdGenerator;
 import lombok.AllArgsConstructor;
@@ -27,13 +32,15 @@ import java.util.stream.Stream;
 @Log4j2
 @Repository
 @AllArgsConstructor
-public class CategoryRepositoryImpl implements CategoryRepository {
+public class CategoryRepositoryImpl implements CategoryRepository, CategoryDetailRepository {
 
 
     private final CategoryMapper mapper;
-    private final MongoTemplate mongoTemplate;
     private final IdGenerator idGenerator;
+    private final MongoTemplate mongoTemplate;
+    private final CategoryDetailMapper cDMapper;
     private final CategoryRepositoryAdapter repository;
+    private final CategoryDetailRepositoryAdapter categoryDetailRepository;
 
     @Override
     public Category create(Category entity) {
@@ -75,8 +82,8 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     @Override
-    public Category findById(String s) {
-        return mapper.toEntity(repository.findById(s).orElseThrow(EntityNotFoundException::new));
+    public Category findById(String id) {
+        return mapper.toEntity(repository.findById(id).orElseThrow(() -> new EntityNotFoundException(id)));
     }
 
     @Override
@@ -86,7 +93,6 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Override
     public void delete(String id) {
-        this.findById(id);
         repository.deleteById(id);
     }
 
@@ -124,5 +130,10 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         query.with(pageable);
 
         return mapper.toEntityList(mongoTemplate.find(query, CategoryDocument.class));
+    }
+
+    @Override
+    public CategoryDetail findCategoryDetailByCategoryId(String id) {
+        return cDMapper.toEntity(categoryDetailRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id)));
     }
 }

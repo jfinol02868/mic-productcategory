@@ -2,7 +2,7 @@ package com.tecomerce.appproductcategory.api.service;
 
 import com.tecomerce.appproductcategory.api.service.dto.ImageDTO;
 import com.tecomerce.appproductcategory.api.service.dto.MessageResponseDTO;
-import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
+import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnumDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -119,7 +119,7 @@ public interface ImageApi {
     @ApiResponse(responseCode = "401", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "403", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "500", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
-    default ResponseEntity<List<ImageDTO>> findAllPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "createAt") String sort, SortEnum direction) {
+    default ResponseEntity<List<ImageDTO>> findAllPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "createAt") String sort, SortEnumDTO direction) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -133,7 +133,7 @@ public interface ImageApi {
             @RequestParam(required = false, defaultValue = "{\"name\":\"book.png\", \"title\":\"Books images\", \"code\":\"IMG-000111\"}") String filterProperties,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
-            @RequestParam(required = false) SortEnum direction,
+            @RequestParam(required = false) SortEnumDTO direction,
             @RequestParam(required = false, defaultValue = "createAt") String... sortProperties) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }

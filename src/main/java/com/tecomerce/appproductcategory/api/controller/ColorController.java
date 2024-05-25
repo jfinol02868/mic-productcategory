@@ -2,9 +2,8 @@ package com.tecomerce.appproductcategory.api.controller;
 
 import com.tecomerce.appproductcategory.api.mapper.ColorDtoMapper;
 import com.tecomerce.appproductcategory.api.service.ColorApi;
-import com.tecomerce.appproductcategory.api.service.dto.CategoryDTO;
 import com.tecomerce.appproductcategory.api.service.dto.ColorDTO;
-import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
+import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnumDTO;
 import com.tecomerce.appproductcategory.application.usecase.ColorUseCase;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
@@ -50,7 +49,7 @@ public class ColorController implements ColorApi {
     }
 
     @Override
-    public ResponseEntity<List<ColorDTO>> findAllPaginated(int page, int size, String sort, SortEnum direction) {
+    public ResponseEntity<List<ColorDTO>> findAllPaginated(int page, int size, String sort, SortEnumDTO direction) {
         return new ResponseEntity<>(mapper.toDtoList(useCase
                 .findAllPaginated(page, size, sort, direction.getValue())), HttpStatus.OK);
     }
@@ -79,7 +78,7 @@ public class ColorController implements ColorApi {
     }
 
     @Override
-    public ResponseEntity<List<ColorDTO>> filters(String filterProperties, int page, int size, SortEnum direction, String... sortProperties) {
+    public ResponseEntity<List<ColorDTO>> filters(String filterProperties, int page, int size, SortEnumDTO direction, String... sortProperties) {
         return new ResponseEntity<>(mapper.toDtoList(useCase.filters(filterProperties, page, size, direction.getValue(), sortProperties)), HttpStatus.OK);
     }
 }

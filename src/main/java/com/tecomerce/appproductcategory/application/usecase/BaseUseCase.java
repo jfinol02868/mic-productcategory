@@ -18,6 +18,8 @@ public interface BaseUseCase<T, K> {
 
     default void delete(K id) {}
 
+    default void delete(K id, boolean deleteChildren) {}
+
     default void deleteAll(List<K> ids) {}
 
     default List<T> findAllPaginated(int page, int size, String sort, String direction) { return List.of(); }

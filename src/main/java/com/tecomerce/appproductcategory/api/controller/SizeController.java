@@ -2,9 +2,8 @@ package com.tecomerce.appproductcategory.api.controller;
 
 import com.tecomerce.appproductcategory.api.mapper.SizeDtoMapper;
 import com.tecomerce.appproductcategory.api.service.SizeApi;
-import com.tecomerce.appproductcategory.api.service.dto.ProductDTO;
 import com.tecomerce.appproductcategory.api.service.dto.SizeDTO;
-import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
+import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnumDTO;
 import com.tecomerce.appproductcategory.application.usecase.SizeUseCase;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
@@ -74,13 +73,13 @@ public class SizeController implements SizeApi {
     }
 
     @Override
-    public ResponseEntity<List<SizeDTO>> findAllPaginated(int page, int size, String sort, SortEnum direction) {
+    public ResponseEntity<List<SizeDTO>> findAllPaginated(int page, int size, String sort, SortEnumDTO direction) {
         return new ResponseEntity<>(mapper.toDtoList(useCase
                 .findAllPaginated(page, size, sort, direction.getValue())), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<SizeDTO>> filters(String filterProperties, int page, int size, SortEnum direction,
+    public ResponseEntity<List<SizeDTO>> filters(String filterProperties, int page, int size, SortEnumDTO direction,
                                                  String... sortProperties) {
         return new ResponseEntity<>(mapper.toDtoList(useCase.filters(filterProperties, page, size, direction.getValue(),
                 sortProperties)), HttpStatus.OK);

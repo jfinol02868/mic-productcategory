@@ -2,7 +2,7 @@ package com.tecomerce.appproductcategory.api.controller;
 
 import com.tecomerce.appproductcategory.api.service.ProductApi;
 import com.tecomerce.appproductcategory.api.service.dto.ProductDTO;
-import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
+import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnumDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.AllArgsConstructor;
@@ -59,12 +59,12 @@ public class ProductController implements ProductApi {
     }
 
     @Override
-    public ResponseEntity<List<ProductDTO>> findAllPaginated(int page, int size, String sort, SortEnum direction) {
+    public ResponseEntity<List<ProductDTO>> findAllPaginated(int page, int size, String sort, SortEnumDTO direction) {
         return ProductApi.super.findAllPaginated(page, size, sort, direction);
     }
 
     @Override
-    public ResponseEntity<List<ProductDTO>> filters(String filterProperties, int page, int size, SortEnum direction, String... sortProperties) {
+    public ResponseEntity<List<ProductDTO>> filters(String filterProperties, int page, int size, SortEnumDTO direction, String... sortProperties) {
         return ProductApi.super.filters(filterProperties, page, size, direction, sortProperties);
     }
 }

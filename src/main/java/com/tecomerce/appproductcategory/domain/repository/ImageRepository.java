@@ -1,6 +1,5 @@
 package com.tecomerce.appproductcategory.domain.repository;
 
-import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
 import com.tecomerce.appproductcategory.domain.entity.Image;
 
 import java.util.List;

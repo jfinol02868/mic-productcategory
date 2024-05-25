@@ -3,14 +3,14 @@ package com.tecomerce.appproductcategory.api.service.dto.enums;
 import lombok.Getter;
 
 @Getter
-public enum SortEnum {
+public enum SortEnumDTO {
 
     ASC("ASC"),
     DESC("DESC");
 
     private final String value;
 
-    SortEnum(String value) {
+    SortEnumDTO(String value) {
         this.value = value;
     }
 

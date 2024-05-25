@@ -20,10 +20,10 @@ public class GlobalControllerAdvice {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EntityNotFoundException.class)
-    public MessageResponseDTO handlerEntityNotFoundException() {
+    public MessageResponseDTO handlerEntityNotFoundException(EntityNotFoundException ex) {
         return MessageResponseDTO.builder()
                 .code("E001")
-                .message(MessageEnum.ENTITY_NOT_FOUND.getMessage())
+                .message(String.format(MessageEnum.ENTITY_NOT_FOUND.getMessage(), ex.getMessage()))
                 .details(new ArrayList<>())
                 .timeStamp(ZonedDateTime.now())
                 .build();

@@ -3,7 +3,7 @@ package com.tecomerce.appproductcategory.api.controller;
 import com.tecomerce.appproductcategory.api.mapper.LocationDtoMapper;
 import com.tecomerce.appproductcategory.api.service.LocationApi;
 import com.tecomerce.appproductcategory.api.service.dto.LocationDTO;
-import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
+import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnumDTO;
 import com.tecomerce.appproductcategory.application.usecase.LocationUseCase;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
@@ -71,14 +71,14 @@ public class LocationController implements LocationApi {
     }
 
     @Override
-    public ResponseEntity<List<LocationDTO>> findAllPaginated(int page, int size, String sort, SortEnum direction) {
+    public ResponseEntity<List<LocationDTO>> findAllPaginated(int page, int size, String sort, SortEnumDTO direction) {
         return new ResponseEntity<>(mapper.toDtoList(
                 useCase.findAllPaginated(page, size, sort, direction.getValue())), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<LocationDTO>> filters(String filterProperties, int page, int size,
-                                                     SortEnum direction, String... sortProperties) {
+                                                     SortEnumDTO direction, String... sortProperties) {
         return new ResponseEntity<>(mapper.toDtoList(
                 useCase.filters(filterProperties, page, size, direction.getValue(), sortProperties)), HttpStatus.OK);
     }

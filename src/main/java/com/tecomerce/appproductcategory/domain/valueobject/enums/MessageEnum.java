@@ -4,7 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum MessageEnum {
-    ENTITY_NOT_FOUND("Entity not found"),
+
+    ENTITY_NOT_FOUND("Entity with id %s not found"),
     METHOD_ARGUMENT_NOT_VALID("Argument not valid"),
     ERROR_MAPPING("Error mapping filter properties"),
     GENERIC_ERROR("Generic error");

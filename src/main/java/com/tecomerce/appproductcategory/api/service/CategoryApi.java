@@ -2,7 +2,7 @@ package com.tecomerce.appproductcategory.api.service;
 
 import com.tecomerce.appproductcategory.api.service.dto.CategoryDTO;
 import com.tecomerce.appproductcategory.api.service.dto.MessageResponseDTO;
-import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
+import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnumDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -97,7 +97,7 @@ public interface CategoryApi {
     @ApiResponse(responseCode = "403", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "404", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "500", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
-    default ResponseEntity<Void> delete(@PathVariable String id) {
+    default ResponseEntity<Void> delete(@PathVariable String id, @RequestParam(defaultValue = "false") boolean deleteChildren) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -119,7 +119,7 @@ public interface CategoryApi {
     @ApiResponse(responseCode = "401", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "403", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "500", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
-    default ResponseEntity<List<CategoryDTO>> findAllPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "createAt") String sort, SortEnum direction) {
+    default ResponseEntity<List<CategoryDTO>> findAllPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "createAt") String sort, SortEnumDTO direction) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -130,10 +130,10 @@ public interface CategoryApi {
     @ApiResponse(responseCode = "403", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     @ApiResponse(responseCode = "500", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
     default ResponseEntity<List<CategoryDTO>> filters(
-            @RequestParam(required = false, defaultValue = "{\"name\":\"Books\", \"description\":\"Books in general\", \"status\":\"ENABLED\"}") String filterProperties,
+            @RequestParam(required = false, defaultValue = "{\"name\":\"Books\", \"description\":\"Books in general\", \"status\":\"PUBLISHED\"}") String filterProperties,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
-            @RequestParam(required = false) SortEnum direction,
+            @RequestParam(required = false) SortEnumDTO direction,
             @RequestParam(required = false, defaultValue = "createAt") String... sortProperties) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }

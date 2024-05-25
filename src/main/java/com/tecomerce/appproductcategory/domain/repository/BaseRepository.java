@@ -28,5 +28,4 @@ public interface BaseRepository<T, K> {
 
     default List<T> filters(T filterProperties, int page, int size, String direction, String... sortProperties){return  List.of(); }
 
-    default List<T> filterColors(String id, String name, String code, String hex, String rgb, int page, int size, String direction, String... properties) { return List.of(); }
 }

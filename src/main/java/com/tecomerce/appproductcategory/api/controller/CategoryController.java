@@ -1,9 +1,13 @@
 package com.tecomerce.appproductcategory.api.controller;
 
+import com.tecomerce.appproductcategory.api.mapper.CategoryDetailDtoMapper;
 import com.tecomerce.appproductcategory.api.mapper.CategoryDtoMapper;
 import com.tecomerce.appproductcategory.api.service.CategoryApi;
+import com.tecomerce.appproductcategory.api.service.CategoryDetailApi;
 import com.tecomerce.appproductcategory.api.service.dto.CategoryDTO;
-import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnum;
+import com.tecomerce.appproductcategory.api.service.dto.CategoryDetailDTO;
+import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnumDTO;
+import com.tecomerce.appproductcategory.application.usecase.CategoryDetailUseCase;
 import com.tecomerce.appproductcategory.application.usecase.CategoryUseCase;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
@@ -19,10 +23,12 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/v1/categories")
 @Tags(value = {@Tag(name = "Category", description = "Category API")})
-public class CategoryController implements CategoryApi {
+public class CategoryController implements CategoryApi, CategoryDetailApi {
 
     private final CategoryUseCase useCase;
     private final CategoryDtoMapper mapper;
+    private final CategoryDetailUseCase cDUseCase;
+    private final CategoryDetailDtoMapper cDMapper;
 
     @Override
     public ResponseEntity<CategoryDTO> create(CategoryDTO entity) {
@@ -59,8 +65,8 @@ public class CategoryController implements CategoryApi {
     }
 
     @Override
-    public ResponseEntity<Void> delete(String id) {
-        useCase.delete(id);
+    public ResponseEntity<Void> delete(String id, boolean deleteChildren) {
+        useCase.delete(id, deleteChildren);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -71,15 +77,20 @@ public class CategoryController implements CategoryApi {
     }
 
     @Override
-    public ResponseEntity<List<CategoryDTO>> findAllPaginated(int page, int size, String sort, SortEnum direction) {
+    public ResponseEntity<List<CategoryDTO>> findAllPaginated(int page, int size, String sort, SortEnumDTO direction) {
         return new ResponseEntity<>(mapper.toDtoList(
                 useCase.findAllPaginated(page, size, sort, direction.getValue())), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<CategoryDTO>> filters(String filterProperties, int page, int size,
-                                                     SortEnum direction, String... sortProperties) {
+                                                     SortEnumDTO direction, String... sortProperties) {
         return new ResponseEntity<>(mapper.toDtoList(
                 useCase.filters(filterProperties, page, size, direction.getValue(), sortProperties)), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CategoryDetailDTO> findDetailById(String id) {
+        return new ResponseEntity<>(cDMapper.toDto(cDUseCase.findCategoryDetailByCategoryId(id)), HttpStatus.OK);
     }
 }

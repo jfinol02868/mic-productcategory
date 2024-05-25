@@ -30,7 +30,7 @@ public interface CategoryApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    @PostMapping("/create-all")
+    @PostMapping("/massCreation")
     @Operation( operationId = "create-all-categories", description = "Create all categories.")
     @ApiResponse(responseCode = "201", content = @Content(mediaType = MEDIA_TYPE,  array = @ArraySchema(schema = @Schema(implementation = CategoryDTO.class))))
     @ApiResponse(responseCode = "400", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
@@ -53,7 +53,7 @@ public interface CategoryApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    @PutMapping("/update-all")
+    @PutMapping("/massUpdate")
     @Operation( operationId = "update-all-categories", description = "Update all categories.")
     @ApiResponse(responseCode = "200", content = @Content(mediaType = MEDIA_TYPE,  array = @ArraySchema(schema = @Schema(implementation = CategoryDTO.class))))
     @ApiResponse(responseCode = "400", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
@@ -77,7 +77,7 @@ public interface CategoryApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/getByIds")
     @Operation( operationId = "get-category-by-ids", description = "Get category by ids.")
     @ApiResponse(responseCode = "200", content = @Content(mediaType = MEDIA_TYPE,  array = @ArraySchema(schema = @Schema(implementation = CategoryDTO.class))))
     @ApiResponse(responseCode = "400", content = @Content(mediaType = MEDIA_TYPE, schema = @Schema(implementation = MessageResponseDTO.class)))
@@ -101,7 +101,7 @@ public interface CategoryApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/deleteByIds")
     @Operation( operationId = "delete-all-categories", description = "Delete categories by ids.")
     @ApiResponse(responseCode = "204", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = Void.class)))
     @ApiResponse(responseCode = "400", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))
@@ -123,7 +123,7 @@ public interface CategoryApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    @GetMapping("/category-filter")
+    @GetMapping("/categoryFilter")
     @Operation( operationId = "get-categories-filter", description = "Get categories filter.")
     @ApiResponse(responseCode = "200", content = @Content(mediaType = MEDIA_TYPE,  array = @ArraySchema(schema = @Schema(implementation = CategoryDTO.class))))
     @ApiResponse(responseCode = "401", content = @Content(mediaType = MEDIA_TYPE,  schema = @Schema(implementation = MessageResponseDTO.class)))

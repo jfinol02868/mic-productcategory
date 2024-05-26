@@ -11,7 +11,7 @@
 	<groupId>com.tecomerce.app</groupId>
 	<artifactId>mic-productcategory</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Mic-ProductCategory</name>
+	<name>productcategory</name>
 	<description>Microservice for products and categories</description>
 
 	<properties>

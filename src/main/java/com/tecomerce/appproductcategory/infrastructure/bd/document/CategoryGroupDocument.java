@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @TypeAlias("categoryGroup")
-@Document(collection = "categoryGroup")
+@Document(collection = "categoryGroups")
 public class CategoryGroupDocument {
 
     private String id;

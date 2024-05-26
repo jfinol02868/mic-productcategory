@@ -2,10 +2,13 @@ package com.tecomerce.appproductcategory.infrastructure.bd.document;
 
 import com.tecomerce.appproductcategory.domain.entity.Money;
 import com.tecomerce.appproductcategory.domain.valueobject.enums.EnumStatus;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
@@ -13,9 +16,12 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@TypeAlias("product")
+@Document(collection = "products")
 public class ProductDocument {
 
-    private Long id;
+    @Id
+    private String id;
     private String name;
     private String description;
     private Boolean status;
@@ -36,6 +42,7 @@ public class ProductDocument {
     private Integer quantity;
     private Integer minimum;
     private Integer maximum;
+    @Enumerated(EnumType.STRING)
     private EnumStatus stockStatus;
 
 

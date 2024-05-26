@@ -5,10 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Objects;
+
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Image {
 
     private String id;
@@ -22,4 +26,10 @@ public class Image {
     private String extension;
     private String description;
     private String author;
+    private ZonedDateTime createAt;
+
+    public void dateOfCreation() {
+        if(Objects.nonNull(this.createAt)) return;
+        this.createAt = ZonedDateTime.now(ZoneId.of("UTC"));
+    }
 }

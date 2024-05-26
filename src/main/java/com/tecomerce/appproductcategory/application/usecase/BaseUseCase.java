@@ -2,41 +2,28 @@ package com.tecomerce.appproductcategory.application.usecase;
 
 import java.util.List;
 
-public interface BaseUseCase<T, ID> {
+public interface BaseUseCase<T, K> {
 
-    default T create(T entity) {
-        return null;
-    }
+    default T create(T entity) { return null; }
 
-    default T createAll(List<T> entities) {
-        return null;
-    }
+    default List<T> createAll(List<T> entities) { return List.of(); }
 
-    default T update(T entity, ID id){
-        return null;
-    }
+    default T update(T entity, K id){ return null; }
 
-    default T updateAll(List<T> entities){
-        return null;
-    }
+    default List<T> updateAll(List<T> entities){ return List.of(); }
 
-    default T findById(ID id) {
-        return null;
-    }
+    default T findById(K id) { return null; }
 
-    default List<T> findByIds(List<ID> id) {
-        return null;
-    }
+    default List<T> findByIds(List<K> id) { return List.of(); }
 
-    default void delete(ID id) {
+    default void delete(K id) {}
 
-    }
+    default void delete(K id, boolean deleteChildren) {}
 
-    default void deleteAll(List<ID> ids) {
+    default void deleteAll(List<K> ids) {}
 
-    }
+    default List<T> findAllPaginated(int page, int size, String sort, String direction) { return List.of(); }
 
-    default List<T> findAll(int page, int size, String sort, String direction, String search, String filter) {
-        return null;
-    }
+    default List<T> filters(String filterProperties, int page, int size, String direction, String... sortProperties){return  List.of(); }
+
 }

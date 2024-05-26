@@ -1,7 +1,36 @@
+server:
+  port: 8090
+
+spring-doc:
+  swagger-ui:
+    path: /web/swagger.html
+    #http://localhost:3030/swagger-ui-custom.html
+
 spring:
   application:
-    name: mic-productCategory
+    name: mic-productcategory
 
-server:
-    port: 8090
+  data:
+    mongodb:
+      database: product
+      username: ${MONGO_USER}
+      password: ${MONGO_PASSWORD}
+      host: ${MONGO_HOST}
+      port: 29870
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+logging:
+  level:
+    org.springframework.data.mongodb: DEBUG
+
+app:
+  environment: DES
+  micro: PRODUCT
+
+
+
+
 

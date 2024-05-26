@@ -9,12 +9,13 @@ import java.math.BigDecimal;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Money {
 
     private String id;
     private String currency;
     private BigDecimal amount;
+
 
 }

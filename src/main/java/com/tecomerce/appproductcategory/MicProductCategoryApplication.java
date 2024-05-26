@@ -6,13 +6,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@OpenAPIDefinition(servers = {
-		@Server(url = "https://productcategory-production.up.railway.app")
-})
+//@OpenAPIDefinition(servers = {
+//		@Server(url = "https://productcategory-production.up.railway.app")
+//})
 public class MicProductCategoryApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MicProductCategoryApplication.class, args);
 	}
-
 }

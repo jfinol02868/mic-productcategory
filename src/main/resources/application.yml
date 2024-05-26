@@ -12,12 +12,11 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://jfinol02:jfinol02@localhost:27017/micro
-#      database: product
-#      username: puser
-#      password: f9XFVDqUNECTqkPq2JHD
-#      host: localhost
-#      port: 27017
+      database: product
+      username: ${MONGO_USER}
+      password: ${MONGO_PASSWORD}
+      host: ${MONGO_HOST}
+      port: 29870
 
   autoconfigure:
     exclude:

@@ -8,6 +8,7 @@ import com.tecomerce.appproductcategory.infrastructure.bd.document.ColorDocument
 import com.tecomerce.appproductcategory.infrastructure.bd.document.SizeDocument;
 import com.tecomerce.appproductcategory.infrastructure.bd.mapper.SizeMapper;
 import com.tecomerce.appproductcategory.infrastructure.bd.repository.SizeRepositoryAdapter;
+import com.tecomerce.appproductcategory.infrastructure.util.DynamicFilterMap;
 import com.tecomerce.appproductcategory.infrastructure.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -34,6 +35,7 @@ public class SizeRepositoryImpl implements SizeRepository {
     private final SizeMapper mapper;
     private final IdGenerator idGenerator;
     private final MongoTemplate mongoTemplate;
+    private final DynamicFilterMap dynamicFilterMap;
     private final SizeRepositoryAdapter repository;
 
     @Override
@@ -104,24 +106,9 @@ public class SizeRepositoryImpl implements SizeRepository {
     }
 
     @Override
-    public List<Size> filters(Size filterProperties, int page, int size, String direction, String... sortProperties) {
-        Query query = new Query();
+    public List<Size> filters(Size sizeProperties, int page, int size, String direction, String... sortProperties) {
         Field[] fields = Color.class.getDeclaredFields();
-
-        for (Field field : fields) {
-            field.setAccessible(true);
-            try {
-                Object value = field.get(filterProperties);
-                if (Objects.nonNull(value)) query.addCriteria(Criteria.where(field.getName()).is(value));
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        }
-
-        Sort.Direction dir = Sort.Direction.fromString(direction);
-        PageRequest pageable = PageRequest.of(page, size, Sort.by(dir, sortProperties));
-        query.with(pageable);
-
+        Query query = dynamicFilterMap.queryFilter(fields, sizeProperties, page, size, direction, sortProperties);
         return mapper.toEntityList(mongoTemplate.find(query, SizeDocument.class));
     }
 }

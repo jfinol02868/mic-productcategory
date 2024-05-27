@@ -6,6 +6,7 @@ import com.tecomerce.appproductcategory.domain.repository.ProductRepository;
 import com.tecomerce.appproductcategory.infrastructure.bd.document.ProductDocument;
 import com.tecomerce.appproductcategory.infrastructure.bd.mapper.ProductMapper;
 import com.tecomerce.appproductcategory.infrastructure.bd.repository.ProductRepositoryAdapter;
+import com.tecomerce.appproductcategory.infrastructure.util.DynamicFilterMap;
 import com.tecomerce.appproductcategory.infrastructure.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,8 +32,9 @@ public class ProductRepositoryImpl implements ProductRepository {
 
 
     private final ProductMapper mapper;
-    private final MongoTemplate mongoTemplate;
     private final IdGenerator idGenerator;
+    private final MongoTemplate mongoTemplate;
+    private final DynamicFilterMap dynamicFilterMap;
     private final ProductRepositoryAdapter repository;
 
     @Override
@@ -105,24 +107,8 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public List<Product> filters(Product product, int page, int size, String direction, String... sortProperties) {
-
-        Query query = new Query();
         Field[] fields = Product.class.getDeclaredFields();
-
-        for (Field field : fields) {
-            field.setAccessible(true);
-            try {
-                Object value = field.get(product);
-                if (Objects.nonNull(value)) query.addCriteria(Criteria.where(field.getName()).is(value));
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        }
-
-        Sort.Direction dir = Sort.Direction.fromString(direction);
-        PageRequest pageable = PageRequest.of(page, size, Sort.by(dir, sortProperties));
-        query.with(pageable);
-
+        Query query = dynamicFilterMap.queryFilter(fields, product, page, size, direction, sortProperties);
         return mapper.toEntityList(mongoTemplate.find(query, ProductDocument.class));
     }
 }

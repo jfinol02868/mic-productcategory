@@ -6,6 +6,7 @@ import com.tecomerce.appproductcategory.domain.repository.ImageRepository;
 import com.tecomerce.appproductcategory.infrastructure.bd.document.ImagesDocuments;
 import com.tecomerce.appproductcategory.infrastructure.bd.mapper.ImageMapper;
 import com.tecomerce.appproductcategory.infrastructure.bd.repository.ImageRepositoryAdapter;
+import com.tecomerce.appproductcategory.infrastructure.util.DynamicFilterMap;
 import com.tecomerce.appproductcategory.infrastructure.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,8 +32,9 @@ public class ImageRepositoryImpl implements ImageRepository {
 
 
     private final ImageMapper mapper;
-    private final MongoTemplate mongoTemplate;
     private final IdGenerator idGenerator;
+    private final MongoTemplate mongoTemplate;
+    private final DynamicFilterMap dynamicFilterMap;
     private final ImageRepositoryAdapter repository;
 
     @Override

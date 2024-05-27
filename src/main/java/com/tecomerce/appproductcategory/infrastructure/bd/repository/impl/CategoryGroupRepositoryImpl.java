@@ -8,6 +8,7 @@ import com.tecomerce.appproductcategory.infrastructure.bd.document.CategoryGroup
 import com.tecomerce.appproductcategory.infrastructure.bd.document.ColorDocument;
 import com.tecomerce.appproductcategory.infrastructure.bd.mapper.CategoryGroupMapper;
 import com.tecomerce.appproductcategory.infrastructure.bd.repository.CategoryGroupRepositoryAdapter;
+import com.tecomerce.appproductcategory.infrastructure.util.DynamicFilterMap;
 import com.tecomerce.appproductcategory.infrastructure.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -34,6 +35,7 @@ public class CategoryGroupRepositoryImpl implements CategoryGroupRepository {
     private final CategoryGroupMapper mapper;
     private final IdGenerator idGenerator;
     private final MongoTemplate mongoTemplate;
+    private final DynamicFilterMap dynamicFilterMap;
     private final CategoryGroupRepositoryAdapter repository;
 
     @Override
@@ -104,24 +106,9 @@ public class CategoryGroupRepositoryImpl implements CategoryGroupRepository {
     }
 
     @Override
-    public List<CategoryGroup> filters(CategoryGroup filterProperties, int page, int CategoryGroup, String direction, String... sortProperties) {
-        Query query = new Query();
+    public List<CategoryGroup> filters(CategoryGroup categoryGroup, int page, int size, String direction, String... sortProperties) {
         Field[] fields = Color.class.getDeclaredFields();
-
-        for (Field field : fields) {
-            field.setAccessible(true);
-            try {
-                Object value = field.get(filterProperties);
-                if (Objects.nonNull(value)) query.addCriteria(Criteria.where(field.getName()).is(value));
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        }
-
-        Sort.Direction dir = Sort.Direction.fromString(direction);
-        PageRequest pageable = PageRequest.of(page, CategoryGroup, Sort.by(dir, sortProperties));
-        query.with(pageable);
-
+        Query query = dynamicFilterMap.queryFilter(fields, categoryGroup, page, size, direction, sortProperties);
         return mapper.toEntityList(mongoTemplate.find(query, CategoryGroupDocument.class));
     }
 }

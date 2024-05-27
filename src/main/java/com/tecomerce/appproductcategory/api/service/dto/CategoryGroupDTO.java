@@ -42,7 +42,7 @@ public class CategoryGroupDTO {
     private List<String> categoryGroups;
 
     @Schema(description = "Indicates if the category group is active", example = "true")
-    private boolean active;
+    private Boolean active;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Schema(description = "Date of creation", example = "2024-05-24T11:30:00-04:00")

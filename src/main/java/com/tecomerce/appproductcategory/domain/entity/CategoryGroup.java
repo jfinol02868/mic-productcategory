@@ -28,7 +28,7 @@ public class CategoryGroup {
     private String groupName;
     private StatusEnumDTO status;
     private List<String> categoryGroups;
-    private boolean isActive;
+    private boolean active;
     private ZonedDateTime createAt;
 
     public void dateOfCreation() {

@@ -26,6 +26,6 @@ public class CategoryGroupDetailDocument {
     private StatusEnumDTO status;
     @DocumentReference(collection = "categories", lazy = true)
     private List<CategoryDocument> categoryGroups;
-    private boolean isActive;
+    private boolean active;
     private ZonedDateTime createAt;
 }

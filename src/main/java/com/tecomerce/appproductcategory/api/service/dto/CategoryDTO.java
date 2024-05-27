@@ -21,6 +21,7 @@ public class CategoryDTO {
     @Schema(description = "Unique identifier of the category", example = "PRODUCT::CATEGORY::BA0EE851-37C9-4528-A54F-FB69FCC6F891::DES")
     private String id;
 
+    @NotNull(message = "The isParent cannot be null or empty.")
     @Schema(description = "Paren of the category", example = "Electronics")
     private Boolean isParent;
 
@@ -34,7 +35,10 @@ public class CategoryDTO {
     @Schema(description = "Identifier of the child category", example = "[\"PRODUCT::CATEGORY::BA0EE851-37C9-4528-A57F-FB69FC26F891::DES\", \"PRODUCT::CATEGORY::BA0BE851-37C9-4528-A57F-FB59F0CC6F891::DES\"]")
     private List<String> categories;
 
-    @Schema(description = "Status of the category", example = "ACTIVE")
+    @Schema(description = "Identifier of the child category", example = "[\"PRODUCT::PRODUCT::BA0EE853-37C9-4528-A57F-FB69FC26F891::DES\", \"PRODUCT::PRODUCT::BA0BE856-37C9-4528-A57F-FB59F0CC6F891::DES\"]")
+    private List<String> products;
+
+    @Schema(description = "Status of the category", example = "PUBLISHED")
     private StatusEnumDTO status;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

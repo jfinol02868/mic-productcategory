@@ -1,5 +1,6 @@
 package com.tecomerce.appproductcategory.infrastructure.bd.document;
 
+import com.tecomerce.appproductcategory.domain.entity.Product;
 import com.tecomerce.appproductcategory.domain.valueobject.enums.StatusEnum;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -28,6 +29,8 @@ public class CategoryDetailDocument {
     private String description;
     @DocumentReference(collection = "categories", lazy = true)
     private List<CategoryDetailDocument> categories;
+    @DocumentReference(collection = "categories", lazy = true)
+    private List<ProductDocument> products;
     @Enumerated(EnumType.ORDINAL)
     private StatusEnum status;
     private ZonedDateTime createAt;

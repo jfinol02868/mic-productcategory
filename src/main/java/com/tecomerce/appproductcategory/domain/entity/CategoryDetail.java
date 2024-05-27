@@ -15,12 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryDetail {
 
-
     private String id;
     private Boolean isParent;
     private String name;
     private String description;
     private List<CategoryDetail> categories;
+    private List<Product> products;
     private StatusEnum status;
     private ZonedDateTime createAt;
 }

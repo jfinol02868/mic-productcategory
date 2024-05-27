@@ -36,6 +36,9 @@ public class CategoryDetailDTO {
     @ArraySchema(schema = @Schema(implementation = CategoryDetailDTO.class))
     private List<CategoryDetailDTO> categories;
 
+    @ArraySchema(schema = @Schema(implementation = ProductDTO.class))
+    private List<ProductDTO> products;
+
     @Schema(description = "Status of the category", example = "PUBLISHED")
     private StatusEnumDTO status;
 

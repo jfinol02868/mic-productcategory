@@ -12,12 +12,11 @@ import lombok.NoArgsConstructor;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryGroupDTO {
+public class CategoryGroupDetailDTO {
 
     @Schema(description = "Unique identifier of the category group", example = "PRODUCT::CATEGORYGROUPS::A1B2C3D4-E5F6-7G8H-9I0J-K1L2M3N4O5P6")
     private String id;
@@ -39,14 +38,12 @@ public class CategoryGroupDTO {
     private StatusEnumDTO status;
 
     @Schema(description = "List of categories in this group", example = "[\"PRODUCT::CATEGORY::BA0EE851-37C9-4528-A57F-FB69FC26F891::DES\", \"PRODUCT::CATEGORY::BA0BE851-37C9-4528-A57F-FB59F0CC6F891::DES\"]")
-    private List<String> categoryGroups;
+    private List<CategoryDTO> categoryGroups;
 
     @Schema(description = "Indicates if the category group is active", example = "true")
-    private Boolean active;
+    private boolean active;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Schema(description = "Date of creation", example = "2024-05-24T11:30:00-04:00")
     private ZonedDateTime createAt;
-
-
 }

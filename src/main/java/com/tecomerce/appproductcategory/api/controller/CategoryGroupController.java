@@ -1,9 +1,14 @@
 package com.tecomerce.appproductcategory.api.controller;
 
+import com.tecomerce.appproductcategory.api.mapper.CategoryGroupDetailDtoMapper;
 import com.tecomerce.appproductcategory.api.mapper.CategoryGroupDtoMapper;
 import com.tecomerce.appproductcategory.api.service.CategoryGroupApi;
+import com.tecomerce.appproductcategory.api.service.CategoryGroupDetailApi;
+import com.tecomerce.appproductcategory.api.service.dto.CategoryDetailDTO;
 import com.tecomerce.appproductcategory.api.service.dto.CategoryGroupDTO;
+import com.tecomerce.appproductcategory.api.service.dto.CategoryGroupDetailDTO;
 import com.tecomerce.appproductcategory.api.service.dto.enums.SortEnumDTO;
+import com.tecomerce.appproductcategory.application.usecase.CategoryGroupDetailUseCase;
 import com.tecomerce.appproductcategory.application.usecase.CategoryGroupUseCase;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
@@ -19,10 +24,12 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/v1/categoryGroups")
 @Tags(value = {@Tag(name = "Category Groups", description = "Category Groups API")})
-public class CategoryGroupController implements CategoryGroupApi {
+public class CategoryGroupController implements CategoryGroupApi, CategoryGroupDetailApi {
 
     private final CategoryGroupUseCase useCase;
     private final CategoryGroupDtoMapper mapper;
+    private final CategoryGroupDetailUseCase cGUseCase;
+    private final CategoryGroupDetailDtoMapper cGMapper;
 
     @Override
     public ResponseEntity<CategoryGroupDTO> create(CategoryGroupDTO entity) {
@@ -83,4 +90,8 @@ public class CategoryGroupController implements CategoryGroupApi {
                 useCase.filters(filterProperties, page, size, direction.getValue(), sortProperties)), HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<CategoryGroupDetailDTO> getCategoryGroupDetailById(String id) {
+        return new ResponseEntity<>(cGMapper.toDto(cGUseCase.findCategoryGroupDetailById(id)), HttpStatus.OK);
+    }
 }

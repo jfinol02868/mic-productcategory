@@ -6,6 +6,7 @@ import com.tecomerce.appproductcategory.domain.repository.ImageRepository;
 import com.tecomerce.appproductcategory.infrastructure.bd.document.ImagesDocuments;
 import com.tecomerce.appproductcategory.infrastructure.bd.mapper.ImageMapper;
 import com.tecomerce.appproductcategory.infrastructure.bd.repository.ImageRepositoryAdapter;
+import com.tecomerce.appproductcategory.infrastructure.util.DynamicFilterMap;
 import com.tecomerce.appproductcategory.infrastructure.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,8 +32,9 @@ public class ImageRepositoryImpl implements ImageRepository {
 
 
     private final ImageMapper mapper;
-    private final MongoTemplate mongoTemplate;
     private final IdGenerator idGenerator;
+    private final MongoTemplate mongoTemplate;
+    private final DynamicFilterMap dynamicFilterMap;
     private final ImageRepositoryAdapter repository;
 
     @Override
@@ -54,6 +56,7 @@ public class ImageRepositoryImpl implements ImageRepository {
     public Image update(Image entity, String id) {
         ImagesDocuments image = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entity.setId(id);
+        entity.setCreateAt(image.getCreateAt());
         BeanUtils.copyProperties(entity, image);
         return mapper.toEntity(repository.save(image));
     }
@@ -63,6 +66,7 @@ public class ImageRepositoryImpl implements ImageRepository {
         return entities.stream()
                 .flatMap(entity -> repository.findById(entity.getId())
                         .map(existingEntity -> {
+                            entity.setCreateAt(existingEntity.getCreateAt());
                             BeanUtils.copyProperties(entity, existingEntity);
                             return Stream.of(mapper.toEntity(repository.save(existingEntity)));
                         })
@@ -105,24 +109,8 @@ public class ImageRepositoryImpl implements ImageRepository {
 
     @Override
     public List<Image> filters(Image image, int page, int size, String direction, String... sortProperties) {
-
-        Query query = new Query();
         Field[] fields = Image.class.getDeclaredFields();
-
-        for (Field field : fields) {
-            field.setAccessible(true);
-            try {
-                Object value = field.get(image);
-                if (Objects.nonNull(value)) query.addCriteria(Criteria.where(field.getName()).is(value));
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        }
-
-        Sort.Direction dir = Sort.Direction.fromString(direction);
-        PageRequest pageable = PageRequest.of(page, size, Sort.by(dir, sortProperties));
-        query.with(pageable);
-
+        Query query = dynamicFilterMap.queryFilter(fields, image, page, size, direction, sortProperties);
         return mapper.toEntityList(mongoTemplate.find(query, ImagesDocuments.class));
     }
 }

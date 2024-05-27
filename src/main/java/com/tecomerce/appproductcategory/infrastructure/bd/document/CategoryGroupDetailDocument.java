@@ -5,20 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TypeAlias("categoryGroup")
 @Document(collection = "categoryGroups")
-public class CategoryGroupDocument {
+public class CategoryGroupDetailDocument {
 
     private String id;
     private String name;
@@ -26,7 +24,8 @@ public class CategoryGroupDocument {
     private String description;
     private String groupName;
     private StatusEnumDTO status;
-    private List<String> categoryGroups;
-    private Boolean active;
+    @DocumentReference(collection = "categories", lazy = true)
+    private List<CategoryDocument> categoryGroups;
+    private boolean active;
     private ZonedDateTime createAt;
 }

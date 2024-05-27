@@ -9,17 +9,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Objects;
-
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryGroup {
+public class CategoryGroupDetail {
 
     private String id;
     private String name;
@@ -27,12 +24,7 @@ public class CategoryGroup {
     private String description;
     private String groupName;
     private StatusEnumDTO status;
-    private List<String> categoryGroups;
-    private Boolean active;
+    private List<Category> categoryGroups;
+    private boolean active;
     private ZonedDateTime createAt;
-
-    public void dateOfCreation() {
-        if(Objects.nonNull(this.createAt)) return;
-        this.createAt = ZonedDateTime.now(ZoneId.of("UTC"));
-    }
 }

@@ -107,24 +107,8 @@ public class ImageRepositoryImpl implements ImageRepository {
 
     @Override
     public List<Image> filters(Image image, int page, int size, String direction, String... sortProperties) {
-
-        Query query = new Query();
         Field[] fields = Image.class.getDeclaredFields();
-
-        for (Field field : fields) {
-            field.setAccessible(true);
-            try {
-                Object value = field.get(image);
-                if (Objects.nonNull(value)) query.addCriteria(Criteria.where(field.getName()).is(value));
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        }
-
-        Sort.Direction dir = Sort.Direction.fromString(direction);
-        PageRequest pageable = PageRequest.of(page, size, Sort.by(dir, sortProperties));
-        query.with(pageable);
-
+        Query query = dynamicFilterMap.queryFilter(fields, image, page, size, direction, sortProperties);
         return mapper.toEntityList(mongoTemplate.find(query, ImagesDocuments.class));
     }
 }

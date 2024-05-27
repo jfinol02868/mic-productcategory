@@ -54,10 +54,11 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product update(Product entity, String id) {
-        ProductDocument Product = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        ProductDocument product = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entity.setId(id);
-        BeanUtils.copyProperties(entity, Product);
-        return mapper.toEntity(repository.save(Product));
+        entity.setCreateAt(product.getCreateAt());
+        BeanUtils.copyProperties(entity, product);
+        return mapper.toEntity(repository.save(product));
     }
 
     @Override
@@ -65,6 +66,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         return entities.stream()
                 .flatMap(entity -> repository.findById(entity.getId())
                         .map(existingEntity -> {
+                            entity.setCreateAt(existingEntity.getCreateAt());
                             BeanUtils.copyProperties(entity, existingEntity);
                             return Stream.of(mapper.toEntity(repository.save(existingEntity)));
                         })

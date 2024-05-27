@@ -23,6 +23,7 @@ public class Category {
     private String name;
     private String description;
     private List<String> categories;
+    private List<String> products;
     private StatusEnum status;
     private ZonedDateTime createAt;
 
@@ -36,4 +37,8 @@ public class Category {
         this.categories = new ArrayList<>();
     }
 
+    public void initializationOfProducts(List<String> products) {
+        if(Objects.nonNull(this.products)) return;
+        this.products = new ArrayList<>();
+    }
 }

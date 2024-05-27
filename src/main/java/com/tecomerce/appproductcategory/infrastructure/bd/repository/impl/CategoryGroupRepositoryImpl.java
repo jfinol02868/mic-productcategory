@@ -1,12 +1,17 @@
 package com.tecomerce.appproductcategory.infrastructure.bd.repository.impl;
 
 import com.tecomerce.appproductcategory.domain.entity.CategoryGroup;
+import com.tecomerce.appproductcategory.domain.entity.CategoryGroupDetail;
 import com.tecomerce.appproductcategory.domain.entity.Color;
 import com.tecomerce.appproductcategory.domain.exception.EntityNotFoundException;
+import com.tecomerce.appproductcategory.domain.repository.CategoryGroupDetailRepository;
 import com.tecomerce.appproductcategory.domain.repository.CategoryGroupRepository;
+import com.tecomerce.appproductcategory.infrastructure.bd.document.CategoryGroupDetailDocument;
 import com.tecomerce.appproductcategory.infrastructure.bd.document.CategoryGroupDocument;
 import com.tecomerce.appproductcategory.infrastructure.bd.document.ColorDocument;
+import com.tecomerce.appproductcategory.infrastructure.bd.mapper.CategoryGroupDetailMapper;
 import com.tecomerce.appproductcategory.infrastructure.bd.mapper.CategoryGroupMapper;
+import com.tecomerce.appproductcategory.infrastructure.bd.repository.CategoryGroupDetailRepositoryAdapter;
 import com.tecomerce.appproductcategory.infrastructure.bd.repository.CategoryGroupRepositoryAdapter;
 import com.tecomerce.appproductcategory.infrastructure.util.DynamicFilterMap;
 import com.tecomerce.appproductcategory.infrastructure.util.IdGenerator;
@@ -17,7 +22,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -30,13 +34,15 @@ import java.util.stream.Stream;
 @Log4j2
 @Repository
 @AllArgsConstructor
-public class CategoryGroupRepositoryImpl implements CategoryGroupRepository {
+public class CategoryGroupRepositoryImpl implements CategoryGroupRepository, CategoryGroupDetailRepository {
 
     private final CategoryGroupMapper mapper;
     private final IdGenerator idGenerator;
     private final MongoTemplate mongoTemplate;
     private final DynamicFilterMap dynamicFilterMap;
     private final CategoryGroupRepositoryAdapter repository;
+    private final CategoryGroupDetailMapper cGDMapper;
+    private final CategoryGroupDetailRepositoryAdapter cGDRepository;
 
     @Override
     public CategoryGroup create(CategoryGroup entity) {
@@ -56,6 +62,7 @@ public class CategoryGroupRepositoryImpl implements CategoryGroupRepository {
     public CategoryGroup update(CategoryGroup entity, String id) {
         CategoryGroupDocument document = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entity.setId(id);
+        entity.setCreateAt(document.getCreateAt());
         BeanUtils.copyProperties(entity, document);
         return mapper.toEntity(repository.save(document));
     }
@@ -65,6 +72,7 @@ public class CategoryGroupRepositoryImpl implements CategoryGroupRepository {
         return entities.stream()
                 .flatMap(entity -> repository.findById(entity.getId())
                         .map(existingEntity -> {
+                            entity.setCreateAt(existingEntity.getCreateAt());
                             BeanUtils.copyProperties(entity, existingEntity);
                             return Stream.of(mapper.toEntity(repository.save(existingEntity)));
                         })
@@ -110,5 +118,10 @@ public class CategoryGroupRepositoryImpl implements CategoryGroupRepository {
         Field[] fields = Color.class.getDeclaredFields();
         Query query = dynamicFilterMap.queryFilter(fields, categoryGroup, page, size, direction, sortProperties);
         return mapper.toEntityList(mongoTemplate.find(query, CategoryGroupDocument.class));
+    }
+
+    @Override
+    public CategoryGroupDetail findCategoryGroupDetailById(String categoryId) {
+        return cGDMapper.toEntity(cGDRepository.findById(categoryId).orElseThrow(() -> new EntityNotFoundException(categoryId)));
     }
 }

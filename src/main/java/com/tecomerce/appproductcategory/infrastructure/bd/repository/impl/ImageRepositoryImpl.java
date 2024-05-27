@@ -56,6 +56,7 @@ public class ImageRepositoryImpl implements ImageRepository {
     public Image update(Image entity, String id) {
         ImagesDocuments image = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entity.setId(id);
+        entity.setCreateAt(image.getCreateAt());
         BeanUtils.copyProperties(entity, image);
         return mapper.toEntity(repository.save(image));
     }
@@ -65,6 +66,7 @@ public class ImageRepositoryImpl implements ImageRepository {
         return entities.stream()
                 .flatMap(entity -> repository.findById(entity.getId())
                         .map(existingEntity -> {
+                            entity.setCreateAt(existingEntity.getCreateAt());
                             BeanUtils.copyProperties(entity, existingEntity);
                             return Stream.of(mapper.toEntity(repository.save(existingEntity)));
                         })

@@ -1,7 +1,10 @@
 package com.tecomerce.appproductcategory.application.usecase.impl;
 
+import com.tecomerce.appproductcategory.application.usecase.CategoryGroupDetailUseCase;
 import com.tecomerce.appproductcategory.application.usecase.CategoryGroupUseCase;
 import com.tecomerce.appproductcategory.domain.entity.CategoryGroup;
+import com.tecomerce.appproductcategory.domain.entity.CategoryGroupDetail;
+import com.tecomerce.appproductcategory.domain.repository.CategoryGroupDetailRepository;
 import com.tecomerce.appproductcategory.domain.repository.CategoryGroupRepository;
 import com.tecomerce.appproductcategory.domain.util.MapperUtil;
 import jakarta.transaction.Transactional;
@@ -12,10 +15,11 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class CategoryGroupGroupUseCaseImpl implements CategoryGroupUseCase {
+public class CategoryGroupGroupUseCaseImpl implements CategoryGroupUseCase, CategoryGroupDetailUseCase {
 
     private final MapperUtil mapperUtil;
     private final CategoryGroupRepository repository;
+    private final CategoryGroupDetailRepository cGRepository;
 
     @Override
     public CategoryGroup create(CategoryGroup entity) {
@@ -71,5 +75,10 @@ public class CategoryGroupGroupUseCaseImpl implements CategoryGroupUseCase {
     public List<CategoryGroup> filters(String filterProperties, int page, int size, String direction, String... sortProperties) {
         CategoryGroup CategoryGroup = (CategoryGroup) mapperUtil.mappingEntity(filterProperties, CategoryGroup.class);
         return repository.filters(CategoryGroup, page, size, direction, sortProperties);
+    }
+
+    @Override
+    public CategoryGroupDetail findCategoryGroupDetailById(String categoryId) {
+        return cGRepository.findCategoryGroupDetailById(categoryId);
     }
 }

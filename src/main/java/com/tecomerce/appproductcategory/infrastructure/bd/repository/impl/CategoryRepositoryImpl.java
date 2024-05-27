@@ -63,6 +63,7 @@ public class CategoryRepositoryImpl implements CategoryRepository, CategoryDetai
     public Category update(Category entity, String id) {
         CategoryDocument category = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entity.setId(id);
+        entity.setCreateAt(category.getCreateAt());
         BeanUtils.copyProperties(entity, category);
         return mapper.toEntity(repository.save(category));
     }
@@ -72,6 +73,7 @@ public class CategoryRepositoryImpl implements CategoryRepository, CategoryDetai
         return entities.stream()
                 .flatMap(entity -> repository.findById(entity.getId())
                         .map(existingEntity -> {
+                            entity.setCreateAt(existingEntity.getCreateAt());
                             BeanUtils.copyProperties(entity, existingEntity);
                             return Stream.of(mapper.toEntity(repository.save(existingEntity)));
                         })

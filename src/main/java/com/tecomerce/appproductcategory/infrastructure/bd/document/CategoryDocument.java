@@ -23,6 +23,7 @@ public class CategoryDocument {
     private String name;
     private String description;
     private List<String> categories;
+    private List<String> products;
     @Enumerated(EnumType.ORDINAL)
     private StatusEnum status;
     private ZonedDateTime createAt;

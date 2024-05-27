@@ -54,10 +54,11 @@ public class SizeRepositoryImpl implements SizeRepository {
 
     @Override
     public Size update(Size entity, String id) {
-        SizeDocument document = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        SizeDocument size = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entity.setId(id);
-        BeanUtils.copyProperties(entity, document);
-        return mapper.toEntity(repository.save(document));
+        entity.setCreateAt(size.getCreateAt());
+        BeanUtils.copyProperties(entity, size);
+        return mapper.toEntity(repository.save(size));
     }
 
     @Override
@@ -65,6 +66,7 @@ public class SizeRepositoryImpl implements SizeRepository {
         return entities.stream()
                 .flatMap(entity -> repository.findById(entity.getId())
                         .map(existingEntity -> {
+                            entity.setCreateAt(existingEntity.getCreateAt());
                             BeanUtils.copyProperties(entity, existingEntity);
                             return Stream.of(mapper.toEntity(repository.save(existingEntity)));
                         })

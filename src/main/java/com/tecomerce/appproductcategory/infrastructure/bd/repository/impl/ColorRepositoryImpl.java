@@ -53,6 +53,7 @@ public class ColorRepositoryImpl implements ColorRepository {
     public Color update(Color entity, String id) {
         ColorDocument color = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entity.setId(id);
+        entity.setCreateAt(color.getCreateAt());
         BeanUtils.copyProperties(entity, color);
         return mapper.toEntity(repository.save(color));
     }
@@ -62,6 +63,7 @@ public class ColorRepositoryImpl implements ColorRepository {
         return entities.stream()
                 .flatMap(entity -> repository.findById(entity.getId())
                         .map(existingEntity -> {
+                            entity.setCreateAt(existingEntity.getCreateAt());
                             BeanUtils.copyProperties(entity, existingEntity);
                             return Stream.of(mapper.toEntity(repository.save(existingEntity)));
                         })

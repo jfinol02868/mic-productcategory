@@ -55,10 +55,11 @@ public class LocationRepositoryImpl implements LocationRepository {
 
     @Override
     public Location update(Location entity, String id) {
-        LocationDocument Location = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        LocationDocument location = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entity.setId(id);
-        BeanUtils.copyProperties(entity, Location);
-        return mapper.toEntity(repository.save(Location));
+        entity.setCreateAt(location.getCreateAt());
+        BeanUtils.copyProperties(entity, location);
+        return mapper.toEntity(repository.save(location));
     }
 
     @Override
@@ -66,6 +67,7 @@ public class LocationRepositoryImpl implements LocationRepository {
         return entities.stream()
                 .flatMap(entity -> repository.findById(entity.getId())
                         .map(existingEntity -> {
+                            entity.setCreateAt(existingEntity.getCreateAt());
                             BeanUtils.copyProperties(entity, existingEntity);
                             return Stream.of(mapper.toEntity(repository.save(existingEntity)));
                         })

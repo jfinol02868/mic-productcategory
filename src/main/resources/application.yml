@@ -10,6 +10,9 @@ spring:
   application:
     name: mic-productcategory
 
+  profiles:
+    active: local
+
   data:
     mongodb:
       database: product

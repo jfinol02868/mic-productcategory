@@ -26,6 +26,7 @@ public class CategoryUseCaseImpl implements CategoryUseCase , CategoryDetailUseC
     public Category create(Category entity) {
         entity.dateOfCreation();
         entity.initializationOfCategories(entity.getCategories());
+        entity.initializationOfProducts(entity.getProducts());
         entity.getCategories().forEach(repository::findById);
         return repository.create(entity);
     }
@@ -33,8 +34,11 @@ public class CategoryUseCaseImpl implements CategoryUseCase , CategoryDetailUseC
     @Override
     @Transactional
     public List<Category> createAll(List<Category> entities) {
-        entities.forEach(Category::dateOfCreation);
-        entities.forEach(entity -> entity.initializationOfCategories(entity.getCategories()));
+        entities.forEach(entity -> {
+            entity.dateOfCreation();
+            entity.initializationOfCategories(entity.getCategories());
+            entity.initializationOfProducts(entity.getProducts());
+        });
         return repository.createAll(entities);
     }
 

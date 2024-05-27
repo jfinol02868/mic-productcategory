@@ -1,13 +1,12 @@
 package com.tecomerce.appproductcategory.infrastructure.bd.repository.impl;
 
 import com.tecomerce.appproductcategory.domain.entity.Color;
-import com.tecomerce.appproductcategory.domain.entity.Image;
 import com.tecomerce.appproductcategory.domain.exception.EntityNotFoundException;
 import com.tecomerce.appproductcategory.domain.repository.ColorRepository;
 import com.tecomerce.appproductcategory.infrastructure.bd.document.ColorDocument;
-import com.tecomerce.appproductcategory.infrastructure.bd.document.ImagesDocuments;
 import com.tecomerce.appproductcategory.infrastructure.bd.mapper.ColorMapper;
 import com.tecomerce.appproductcategory.infrastructure.bd.repository.ColorRepositoryAdapter;
+import com.tecomerce.appproductcategory.infrastructure.util.DynamicFilterMap;
 import com.tecomerce.appproductcategory.infrastructure.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -34,6 +32,7 @@ public class ColorRepositoryImpl implements ColorRepository {
     private final ColorMapper mapper;
     private final IdGenerator idGenerator;
     private final MongoTemplate mongoTemplate;
+    private final DynamicFilterMap dynamicFilterMap;
     private final ColorRepositoryAdapter repository;
 
     @Override
@@ -54,6 +53,7 @@ public class ColorRepositoryImpl implements ColorRepository {
     public Color update(Color entity, String id) {
         ColorDocument color = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entity.setId(id);
+        entity.setCreateAt(color.getCreateAt());
         BeanUtils.copyProperties(entity, color);
         return mapper.toEntity(repository.save(color));
     }
@@ -63,6 +63,7 @@ public class ColorRepositoryImpl implements ColorRepository {
         return entities.stream()
                 .flatMap(entity -> repository.findById(entity.getId())
                         .map(existingEntity -> {
+                            entity.setCreateAt(existingEntity.getCreateAt());
                             BeanUtils.copyProperties(entity, existingEntity);
                             return Stream.of(mapper.toEntity(repository.save(existingEntity)));
                         })
@@ -105,23 +106,8 @@ public class ColorRepositoryImpl implements ColorRepository {
 
     @Override
     public List<Color> filters(Color color, int page, int size, String direction, String... sortProperties) {
-        Query query = new Query();
         Field[] fields = Color.class.getDeclaredFields();
-
-        for (Field field : fields) {
-            field.setAccessible(true);
-            try {
-                Object value = field.get(color);
-                if (Objects.nonNull(value)) query.addCriteria(Criteria.where(field.getName()).is(value));
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        }
-
-        Sort.Direction dir = Sort.Direction.fromString(direction);
-        PageRequest pageable = PageRequest.of(page, size, Sort.by(dir, sortProperties));
-        query.with(pageable);
-
+        Query query = dynamicFilterMap.queryFilter(fields, color, page, size, direction, sortProperties);
         return mapper.toEntityList(mongoTemplate.find(query, ColorDocument.class));
     }
 }

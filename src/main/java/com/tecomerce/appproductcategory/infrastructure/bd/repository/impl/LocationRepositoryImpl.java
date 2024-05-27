@@ -7,6 +7,7 @@ import com.tecomerce.appproductcategory.domain.repository.LocationRepository;
 import com.tecomerce.appproductcategory.infrastructure.bd.document.LocationDocument;
 import com.tecomerce.appproductcategory.infrastructure.bd.mapper.LocationMapper;
 import com.tecomerce.appproductcategory.infrastructure.bd.repository.LocationRepositoryAdapter;
+import com.tecomerce.appproductcategory.infrastructure.util.DynamicFilterMap;
 import com.tecomerce.appproductcategory.infrastructure.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -32,8 +33,9 @@ public class LocationRepositoryImpl implements LocationRepository {
 
 
     private final LocationMapper mapper;
-    private final MongoTemplate mongoTemplate;
     private final IdGenerator idGenerator;
+    private final MongoTemplate mongoTemplate;
+    private final DynamicFilterMap dynamicFilterMap;
     private final LocationRepositoryAdapter repository;
 
     @Override
@@ -53,10 +55,11 @@ public class LocationRepositoryImpl implements LocationRepository {
 
     @Override
     public Location update(Location entity, String id) {
-        LocationDocument Location = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        LocationDocument location = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entity.setId(id);
-        BeanUtils.copyProperties(entity, Location);
-        return mapper.toEntity(repository.save(Location));
+        entity.setCreateAt(location.getCreateAt());
+        BeanUtils.copyProperties(entity, location);
+        return mapper.toEntity(repository.save(location));
     }
 
     @Override
@@ -64,6 +67,7 @@ public class LocationRepositoryImpl implements LocationRepository {
         return entities.stream()
                 .flatMap(entity -> repository.findById(entity.getId())
                         .map(existingEntity -> {
+                            entity.setCreateAt(existingEntity.getCreateAt());
                             BeanUtils.copyProperties(entity, existingEntity);
                             return Stream.of(mapper.toEntity(repository.save(existingEntity)));
                         })
@@ -106,24 +110,8 @@ public class LocationRepositoryImpl implements LocationRepository {
 
     @Override
     public List<Location> filters(Location location, int page, int size, String direction, String... sortProperties) {
-
-        Query query = new Query();
         Field[] fields = Location.class.getDeclaredFields();
-
-        for (Field field : fields) {
-            field.setAccessible(true);
-            try {
-                Object value = field.get(location);
-                if (Objects.nonNull(value)) query.addCriteria(Criteria.where(field.getName()).is(value));
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        }
-
-        Sort.Direction dir = Sort.Direction.fromString(direction);
-        PageRequest pageable = PageRequest.of(page, size, Sort.by(dir, sortProperties));
-        query.with(pageable);
-
+        Query query = dynamicFilterMap.queryFilter(fields, location, page, size, direction, sortProperties);
         return mapper.toEntityList(mongoTemplate.find(query, LocationDocument.class));
     }
 }

@@ -11,6 +11,7 @@ import com.tecomerce.appproductcategory.infrastructure.bd.mapper.CategoryDetailM
 import com.tecomerce.appproductcategory.infrastructure.bd.mapper.CategoryMapper;
 import com.tecomerce.appproductcategory.infrastructure.bd.repository.CategoryDetailRepositoryAdapter;
 import com.tecomerce.appproductcategory.infrastructure.bd.repository.CategoryRepositoryAdapter;
+import com.tecomerce.appproductcategory.infrastructure.util.DynamicFilterMap;
 import com.tecomerce.appproductcategory.infrastructure.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -39,6 +40,7 @@ public class CategoryRepositoryImpl implements CategoryRepository, CategoryDetai
     private final IdGenerator idGenerator;
     private final MongoTemplate mongoTemplate;
     private final CategoryDetailMapper cDMapper;
+    private final DynamicFilterMap dynamicFilterMap;
     private final CategoryRepositoryAdapter repository;
     private final CategoryDetailRepositoryAdapter categoryDetailRepository;
 
@@ -61,6 +63,7 @@ public class CategoryRepositoryImpl implements CategoryRepository, CategoryDetai
     public Category update(Category entity, String id) {
         CategoryDocument category = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entity.setId(id);
+        entity.setCreateAt(category.getCreateAt());
         BeanUtils.copyProperties(entity, category);
         return mapper.toEntity(repository.save(category));
     }
@@ -70,6 +73,7 @@ public class CategoryRepositoryImpl implements CategoryRepository, CategoryDetai
         return entities.stream()
                 .flatMap(entity -> repository.findById(entity.getId())
                         .map(existingEntity -> {
+                            entity.setCreateAt(existingEntity.getCreateAt());
                             BeanUtils.copyProperties(entity, existingEntity);
                             return Stream.of(mapper.toEntity(repository.save(existingEntity)));
                         })
@@ -111,24 +115,8 @@ public class CategoryRepositoryImpl implements CategoryRepository, CategoryDetai
 
     @Override
     public List<Category> filters(Category category, int page, int size, String direction, String... sortProperties) {
-
-        Query query = new Query();
         Field[] fields = Category.class.getDeclaredFields();
-
-        for (Field field : fields) {
-            field.setAccessible(true);
-            try {
-                Object value = field.get(category);
-                if (Objects.nonNull(value)) query.addCriteria(Criteria.where(field.getName()).is(value));
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        }
-
-        Sort.Direction dir = Sort.Direction.fromString(direction);
-        PageRequest pageable = PageRequest.of(page, size, Sort.by(dir, sortProperties));
-        query.with(pageable);
-
+        Query query = dynamicFilterMap.queryFilter(fields, category, page, size, direction, sortProperties);
         return mapper.toEntityList(mongoTemplate.find(query, CategoryDocument.class));
     }
 

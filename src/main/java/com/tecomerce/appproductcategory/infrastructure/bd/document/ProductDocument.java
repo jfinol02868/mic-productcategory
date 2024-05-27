@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Data
@@ -44,8 +45,5 @@ public class ProductDocument {
     private Integer maximum;
     @Enumerated(EnumType.STRING)
     private EnumStatus stockStatus;
-
-
-
-
+    private ZonedDateTime createAt;
 }

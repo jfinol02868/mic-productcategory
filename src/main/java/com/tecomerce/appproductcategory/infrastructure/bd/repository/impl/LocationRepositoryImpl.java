@@ -80,8 +80,9 @@ public class LocationRepositoryImpl implements LocationRepository {
     }
 
     @Override
-    public Location findById(String s) {
-        return mapper.toEntity(repository.findById(s).orElseThrow(EntityNotFoundException::new));
+    public Location findById(String id) {
+        return mapper.toEntity(repository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(id)));
     }
 
     @Override

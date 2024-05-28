@@ -87,7 +87,8 @@ public class CategoryRepositoryImpl implements CategoryRepository, CategoryDetai
 
     @Override
     public Category findById(String id) {
-        return mapper.toEntity(repository.findById(id).orElseThrow(() -> new EntityNotFoundException(id)));
+        return mapper.toEntity(repository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(id)));
     }
 
     @Override

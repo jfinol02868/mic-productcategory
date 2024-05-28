@@ -79,8 +79,9 @@ public class ImageRepositoryImpl implements ImageRepository {
     }
 
     @Override
-    public Image findById(String s) {
-        return mapper.toEntity(repository.findById(s).orElseThrow(EntityNotFoundException::new));
+    public Image findById(String id) {
+        return mapper.toEntity(repository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(id)));
     }
 
     @Override

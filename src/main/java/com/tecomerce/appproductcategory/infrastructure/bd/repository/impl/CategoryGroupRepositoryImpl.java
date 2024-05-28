@@ -86,7 +86,8 @@ public class CategoryGroupRepositoryImpl implements CategoryGroupRepository, Cat
 
     @Override
     public CategoryGroup findById(String id) {
-        return mapper.toEntity(repository.findById(id).orElseThrow(EntityNotFoundException::new));
+        return mapper.toEntity(repository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(id)));
     }
 
     @Override
